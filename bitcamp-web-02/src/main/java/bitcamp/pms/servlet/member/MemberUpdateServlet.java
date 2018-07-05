@@ -17,7 +17,7 @@ import javax.servlet.http.HttpServletResponse;
 public class MemberUpdateServlet extends HttpServlet {
     
     @Override
-    protected void doGet(
+    protected void doPost(
             HttpServletRequest request, 
             HttpServletResponse response)
                     throws ServletException, IOException {

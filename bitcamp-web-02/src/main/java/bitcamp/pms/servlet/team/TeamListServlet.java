@@ -33,6 +33,10 @@ public class TeamListServlet extends HttpServlet {
         out.println("<body>");
         out.println("<h1>팀 목록</h1>");
         out.println("<p><a href='form.html'>새 팀</a></p>");
+        out.println("<table border='1'>");
+        out.println("<tr>");
+        out.println("    <th>팀명</th><th>최대인원</th><th>기간</th>");
+        out.println("</tr>");
         
         try {
             Class.forName("com.mysql.jdbc.Driver");
@@ -45,10 +49,6 @@ public class TeamListServlet extends HttpServlet {
                 ResultSet rs = stmt.executeQuery();) {
                 
                 while (rs.next()) {
-                    out.println("<table border='1'>");
-                    out.println("<tr>");
-                    out.println("    <th>팀명</th><th>최대인원</th><th>기간</th>");
-                    out.println("</tr>");
                     
                     out.println("<tr>");
                     out.printf("    <td><a href='view?name=%s'>%s</a></td><td>%d</td><td>%s~%s</td>\n",

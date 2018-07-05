@@ -35,7 +35,6 @@ public class MemberViewServlet extends HttpServlet {
         out.println("</head>");
         out.println("<body>");
         out.println("<h1>멤버 보기</h1>");
-        out.println("<form action='update' method='post'>");
         
         try {
             Class.forName("com.mysql.jdbc.Driver");
@@ -48,19 +47,27 @@ public class MemberViewServlet extends HttpServlet {
                 
                 stmt.setString(1, id);
                 try (ResultSet rs = stmt.executeQuery();) {                   
-                    if (rs.next())
-                    
-                    out.println("<table border='1'>");
-                    out.println("<tr><th>아이디</th><td>");
-                    out.printf("    <input type='text' name='id' value='%s' readonly></td></tr>\n", 
-                            rs.getString("mid"));
-                    out.println("<tr><th>이메일</th>");
-                    out.printf("    <td><input type='email' name='email' value='%s'></td></tr>\n",
-                            rs.getString("email"));
-                    out.println("<tr><th>암호</th>");
-                    out.println("    <td><input type='password' name='password'></td></tr>\n");
-                    out.println("</table>");
-                    
+                    if (!rs.next()) {
+                        out.println("<p>유효하지 않은 멤버 아이디입니다.</p>");
+                    } else {
+                        out.println("<form action='update' method='post'>");
+                        out.println("<table border='1'>");
+                        out.println("<tr><th>아이디</th><td>");
+                        out.printf("    <input type='text' name='id' value='%s' readonly></td></tr>\n", 
+                                rs.getString("mid"));
+                        out.println("<tr><th>이메일</th>");
+                        out.printf("    <td><input type='email' name='email' value='%s'></td></tr>\n",
+                                rs.getString("email"));
+                        out.println("<tr><th>암호</th>");
+                        out.println("    <td><input type='password' name='password'></td></tr>\n");
+                        out.println("</table>");
+                        out.println("<p>");
+                        out.println("<a href='list'>목록</a>");
+                        out.println("<button>변경</button>");
+                        out.printf("<a href='delete?id=%s'>삭제</a>\n", id);
+                        out.println("</p>");
+                        out.println("</form>");
+                    }
                 }
             }  
             
@@ -69,12 +76,6 @@ public class MemberViewServlet extends HttpServlet {
             out.printf("<p>%s</p>\n", e.getMessage());
             e.printStackTrace(out);
         }
-        out.println("<p>");
-        out.println("<a href='list'>목록</a>");
-        out.println("<button>변경</button>");
-        out.printf("<a href='delete?id=%s'>삭제</a>\n", id);
-        out.println("</p>");
-        out.println("</form>");
         out.println("</body>");
         out.println("</html>");
     }

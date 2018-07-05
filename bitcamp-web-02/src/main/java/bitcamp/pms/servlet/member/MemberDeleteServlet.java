@@ -21,8 +21,6 @@ public class MemberDeleteServlet extends HttpServlet {
             HttpServletResponse response) 
                     throws ServletException, IOException {
         
-        String id = request.getParameter("id");
-        
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
         
@@ -45,9 +43,14 @@ public class MemberDeleteServlet extends HttpServlet {
                 PreparedStatement stmt = con.prepareStatement(
                     "delete from pms2_member where mid=?");) {
                 
-                stmt.setString(1, id);
-                stmt.executeUpdate();
-                out.println("<p>삭제하였습니다.</p>");
+                stmt.setString(1, request.getParameter("id"));
+                
+                if (stmt.executeUpdate() == 0) {
+                    out.println("<p>해당 회원이 존재하지 않습니다.</p>");
+                } else {
+                    out.println("<p>삭제하였습니다.</p>");
+                }
+                    
             }
         } catch (Exception e) {
             out.println("<p>삭제 실패!</p>");

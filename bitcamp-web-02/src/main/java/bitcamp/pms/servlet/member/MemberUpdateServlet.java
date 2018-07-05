@@ -49,9 +49,14 @@ public class MemberUpdateServlet extends HttpServlet {
                 stmt.setString(1, request.getParameter("email"));
                 stmt.setString(2, request.getParameter("password"));
                 stmt.setString(3, request.getParameter("id"));
-                stmt.executeUpdate();
-                out.println("<p>변경 성공!</p>");
+                
+                if (stmt.executeUpdate() == 0) {
+                    out.println("<p>해당 회원이 존재하지 않습니다.</p>");
+                } else {
+                    out.println("<p>변경하였습니다.</p>");
+                }
             }
+            
         } catch (Exception e) {
             out.println("<p>변경 실패!</p>");
             e.printStackTrace(out);

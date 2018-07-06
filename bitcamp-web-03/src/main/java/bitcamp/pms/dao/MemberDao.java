@@ -10,8 +10,16 @@ import bitcamp.pms.domain.Member;
 
 public class MemberDao {
     
+    // MemberDao 객체를 호출시 바로 준비할 객체를 static 블록에 넣는다.
+    static {
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+    
     public static void insert(Member member) throws Exception {
-        Class.forName("com.mysql.jdbc.Driver");
         try (
             Connection con = DriverManager.getConnection(
                 "jdbc:mysql://13.209.19.155:3306/studydb",
@@ -27,7 +35,6 @@ public class MemberDao {
 
     public static ArrayList<Member> selectOne() throws Exception {
         
-        Class.forName("com.mysql.jdbc.Driver");
         try (Connection con = DriverManager.getConnection(
                         "jdbc:mysql://13.209.19.155:3306/studydb",
                         "study", "1111");
@@ -49,7 +56,7 @@ public class MemberDao {
     }
     
     public static Member selectOne(String id) throws Exception {
-        Class.forName("com.mysql.jdbc.Driver");
+        
         try (Connection con = DriverManager.getConnection(
                 "jdbc:mysql://13.209.19.155:3306/studydb", "study", "1111");
              PreparedStatement stmt = 
@@ -71,7 +78,7 @@ public class MemberDao {
     }
     
     public static int update(Member member) throws Exception {
-        Class.forName("com.mysql.jdbc.Driver");
+
         try (
             Connection con = DriverManager.getConnection(
                 "jdbc:mysql://13.209.19.155:3306/studydb",
@@ -87,8 +94,9 @@ public class MemberDao {
         }
     }
     
+    
     public static int delete(String id) throws Exception {
-        Class.forName("com.mysql.jdbc.Driver");
+
         try (
             Connection con = DriverManager.getConnection(
                 "jdbc:mysql://13.209.19.155:3306/studydb",

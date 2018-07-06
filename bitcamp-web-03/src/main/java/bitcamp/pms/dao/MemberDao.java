@@ -19,11 +19,14 @@ public class MemberDao {
         }
     }
     
+    static String jdbcUrl = "jdbc:mysql://13.209.19.155:3306/studydb";
+    static String username = "study";
+    static String password = "1111";
+    
     public static void insert(Member member) throws Exception {
-        try (
-            Connection con = DriverManager.getConnection(
-                "jdbc:mysql://13.209.19.155:3306/studydb",
-                "study", "1111");
+        
+        try (Connection con = DriverManager.getConnection(
+                jdbcUrl, username, password);
             PreparedStatement stmt = con.prepareStatement(
                 "insert into pms2_member(mid,email,pwd) values(?,?,password(?))");) {
             stmt.setString(1, member.getId());
@@ -31,13 +34,13 @@ public class MemberDao {
             stmt.setString(3, member.getPassword());
             stmt.executeUpdate();
         }
+    
     }
 
     public static ArrayList<Member> selectOne() throws Exception {
         
         try (Connection con = DriverManager.getConnection(
-                        "jdbc:mysql://13.209.19.155:3306/studydb",
-                        "study", "1111");
+                    jdbcUrl, username, password);
                 PreparedStatement stmt = con.prepareStatement(
                         "select mid, email from pms2_member");
                 ResultSet rs = stmt.executeQuery();) {
@@ -58,7 +61,7 @@ public class MemberDao {
     public static Member selectOne(String id) throws Exception {
         
         try (Connection con = DriverManager.getConnection(
-                "jdbc:mysql://13.209.19.155:3306/studydb", "study", "1111");
+                    jdbcUrl, username, password);
              PreparedStatement stmt = 
                      con.prepareStatement("select mid,email from pms2_member where mid=?");) {
 
@@ -79,10 +82,8 @@ public class MemberDao {
     
     public static int update(Member member) throws Exception {
 
-        try (
-            Connection con = DriverManager.getConnection(
-                "jdbc:mysql://13.209.19.155:3306/studydb",
-                "study", "1111");
+        try (Connection con = DriverManager.getConnection(
+                    jdbcUrl, username, password);
             PreparedStatement stmt = con.prepareStatement(
                 "update pms2_member set email=?, pwd=password(?) where mid=?");) {
             
@@ -97,10 +98,8 @@ public class MemberDao {
     
     public static int delete(String id) throws Exception {
 
-        try (
-            Connection con = DriverManager.getConnection(
-                "jdbc:mysql://13.209.19.155:3306/studydb",
-                "study", "1111");
+        try (Connection con = DriverManager.getConnection(
+                    jdbcUrl, username, password);
             PreparedStatement stmt = con.prepareStatement(
                 "delete from pms2_member where mid=?");) {
             

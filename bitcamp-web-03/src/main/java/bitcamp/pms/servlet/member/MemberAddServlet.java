@@ -45,8 +45,7 @@ public class MemberAddServlet extends HttpServlet {
                 member.setPassword(request.getParameter("password"));
 
                 MemberDao memberDao = 
-                        new MemberDao("jdbc:mysql://13.209.19.155:3306/studydb",
-                                "study", "1111");
+                        (MemberDao) getServletContext().getAttribute("memberDao");
                 memberDao.insert(member);
                 
                 out.println("<p>등록 성공!</p>");

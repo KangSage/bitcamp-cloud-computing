@@ -42,7 +42,7 @@ public class MemberListServlet extends HttpServlet {
 
         try {
             MemberDao memberDao = 
-                    new MemberDao("jdbc:mysql://13.209.19.155:3306/studydb", "study", "1111");
+                    (MemberDao) getServletContext().getAttribute("memberDao");
             
             ArrayList<Member> list = memberDao.selectOne();
             

@@ -52,7 +52,7 @@ public class MemberViewServlet extends HttpServlet {
                 try (ResultSet rs = stmt.executeQuery();) {                   
                     
                     MemberDao memberDao = 
-                            new MemberDao("jdbc:mysql://13.209.19.155:3306/studydb","study", "1111");
+                            (MemberDao) getServletContext().getAttribute("memberDao");
                     Member member = memberDao.selectOne(id);
                     
                     if (member == null) {

@@ -46,7 +46,7 @@ public class MemberDeleteServlet extends HttpServlet {
                     "delete from pms2_member where mid=?");) {
                 
                 MemberDao memberDao = 
-                        new MemberDao("jdbc:mysql://13.209.19.155:3306/studydb","study", "1111");
+                        (MemberDao) getServletContext().getAttribute("memberDao");
                 
                 if (memberDao.delete(request.getParameter("id"))== 0) {
                     out.println("<p>해당 회원이 존재하지 않습니다.</p>");

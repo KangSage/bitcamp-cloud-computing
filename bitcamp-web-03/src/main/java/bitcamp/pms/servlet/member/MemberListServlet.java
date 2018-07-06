@@ -41,7 +41,10 @@ public class MemberListServlet extends HttpServlet {
         out.println("</tr>");
 
         try {
-            ArrayList<Member> list = MemberDao.selectOne();
+            MemberDao memberDao = 
+                    new MemberDao("jdbc:mysql://13.209.19.155:3306/studydb", "study", "1111");
+            
+            ArrayList<Member> list = memberDao.selectOne();
             
             for(Member member : list) {
                     out.println("<tr>");

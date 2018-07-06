@@ -51,7 +51,9 @@ public class MemberViewServlet extends HttpServlet {
                 stmt.setString(1, id);
                 try (ResultSet rs = stmt.executeQuery();) {                   
                     
-                    Member member = MemberDao.selectOne(id);
+                    MemberDao memberDao = 
+                            new MemberDao("jdbc:mysql://13.209.19.155:3306/studydb","study", "1111");
+                    Member member = memberDao.selectOne(id);
                     
                     if (member == null) {
                         out.println("<p>유효하지 않은 멤버 아이디입니다.</p>");

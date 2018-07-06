@@ -18,12 +18,22 @@ public class MemberDao {
             e.printStackTrace();
         }
     }
+
+    String jdbcUrl;
+    String username;
+    String password;
     
-    static String jdbcUrl = "jdbc:mysql://13.209.19.155:3306/studydb";
-    static String username = "study";
-    static String password = "1111";
+    public MemberDao(String jdbcUrl, String username, String password) {
+        
+        this.jdbcUrl = jdbcUrl;
+        this.username = username;
+        this.password = password;
+        
+    }
     
-    public static void insert(Member member) throws Exception {
+    
+    
+    public void insert(Member member) throws Exception {
         
         try (Connection con = DriverManager.getConnection(
                 jdbcUrl, username, password);
@@ -37,7 +47,7 @@ public class MemberDao {
     
     }
 
-    public static ArrayList<Member> selectOne() throws Exception {
+    public ArrayList<Member> selectOne() throws Exception {
         
         try (Connection con = DriverManager.getConnection(
                     jdbcUrl, username, password);
@@ -58,7 +68,7 @@ public class MemberDao {
         
     }
     
-    public static Member selectOne(String id) throws Exception {
+    public Member selectOne(String id) throws Exception {
         
         try (Connection con = DriverManager.getConnection(
                     jdbcUrl, username, password);
@@ -80,7 +90,7 @@ public class MemberDao {
         }
     }
     
-    public static int update(Member member) throws Exception {
+    public int update(Member member) throws Exception {
 
         try (Connection con = DriverManager.getConnection(
                     jdbcUrl, username, password);
@@ -96,7 +106,7 @@ public class MemberDao {
     }
     
     
-    public static int delete(String id) throws Exception {
+    public int delete(String id) throws Exception {
 
         try (Connection con = DriverManager.getConnection(
                     jdbcUrl, username, password);

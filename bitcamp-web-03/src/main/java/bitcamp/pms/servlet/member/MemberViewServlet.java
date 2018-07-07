@@ -36,7 +36,8 @@ public class MemberViewServlet extends HttpServlet {
         out.println("<h1>멤버 보기</h1>");
         
         try {
-            MemberDao memberDao = new MemberDao("jdbc:mysql://13.209.19.155:3306/studydb", "study", "1111");
+            MemberDao memberDao = 
+                    (MemberDao) getServletContext().getAttribute("memberDao");
             
             Member member = memberDao.selectOne(id);
 

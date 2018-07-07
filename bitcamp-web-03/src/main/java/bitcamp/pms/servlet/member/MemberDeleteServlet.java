@@ -33,7 +33,8 @@ public class MemberDeleteServlet extends HttpServlet {
         out.println("<body>");
         out.println("<h1>게시물 삭제 결과</h1>");
         
-        MemberDao memberDao = new MemberDao("jdbc:mysql://13.209.19.155:3306/studydb", "study", "1111");
+        MemberDao memberDao = 
+                (MemberDao) getServletContext().getAttribute("memberDao");
         
         try {
             if (memberDao.delete(request.getParameter("id")) == 0) {

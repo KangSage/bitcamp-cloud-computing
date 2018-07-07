@@ -54,7 +54,8 @@ public class MemberListServlet extends HttpServlet {
                         "select mid, email from pms2_member");
                 ResultSet rs = stmt.executeQuery();) {
 
-                MemberDao memberDao = new MemberDao("jdbc:mysql://13.209.19.155:3306/studydb", "study", "1111");
+                MemberDao memberDao = 
+                        (MemberDao) getServletContext().getAttribute("memberDao");
                 
                 ArrayList<Member> list = memberDao.selectList();
                 

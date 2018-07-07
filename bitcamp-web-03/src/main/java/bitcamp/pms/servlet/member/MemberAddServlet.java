@@ -39,17 +39,14 @@ public class MemberAddServlet extends HttpServlet {
         out.println("<h1>회원 등록 결과</h1>");
         
         try {
-                Member member = new Member();
-                member.setId(request.getParameter("id"));
-                member.setEmail(request.getParameter("email"));
-                member.setPassword(request.getParameter("password"));
-
-                MemberDao memberDao = 
-                        (MemberDao) getServletContext().getAttribute("memberDao");
-                memberDao.insert(member);
-                
-                out.println("<p>등록 성공!</p>");
+            Member member = new Member();
+            member.setId(request.getParameter("id"));
+            member.setEmail(request.getParameter("email"));
+            member.setPassword(request.getParameter("password"));
             
+            MemberDao.insert(member);
+            
+            out.println("<p>등록 성공!</p>");
         } catch (Exception e) {
             out.println("<p>등록 실패!</p>");
             e.printStackTrace(out);
@@ -58,4 +55,6 @@ public class MemberAddServlet extends HttpServlet {
         out.println("</html>");
     }
 
-} // class
+
+    
+}

@@ -10,50 +10,32 @@ import bitcamp.pms.domain.Member;
 
 public class MemberDao {
     
-    // MemberDao 객체를 호출시 바로 준비할 객체를 static 블록에 넣는다.
     static {
         try {
             Class.forName("com.mysql.jdbc.Driver");
         } catch (ClassNotFoundException e) {
+            // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }
-
+    
     String jdbcUrl;
     String username;
     String password;
     
     public MemberDao(String jdbcUrl, String username, String password) {
-        
         this.jdbcUrl = jdbcUrl;
         this.username = username;
         this.password = password;
-        
     }
     
-    
-    
-    public void insert(Member member) throws Exception {
-        
-        try (Connection con = DriverManager.getConnection(
-                jdbcUrl, username, password);
-            PreparedStatement stmt = con.prepareStatement(
-                "insert into pms2_member(mid,email,pwd) values(?,?,password(?))");) {
-            stmt.setString(1, member.getId());
-            stmt.setString(2, member.getEmail());
-            stmt.setString(3, member.getPassword());
-            stmt.executeUpdate();
-        }
-    
-    }
-
-    public ArrayList<Member> selectOne() throws Exception {
-        
-        try (Connection con = DriverManager.getConnection(
+    public ArrayList<Member> selectList() throws Exception {
+        try (
+            Connection con = DriverManager.getConnection(
                     jdbcUrl, username, password);
-                PreparedStatement stmt = con.prepareStatement(
-                        "select mid, email from pms2_member");
-                ResultSet rs = stmt.executeQuery();) {
+            PreparedStatement stmt = con.prepareStatement(
+                    "select mid, email from pms2_member");
+            ResultSet rs = stmt.executeQuery();) {
 
             ArrayList<Member> list = new ArrayList<>();
             
@@ -65,59 +47,69 @@ public class MemberDao {
             }
             return list;
         }
-        
+    }
+    
+    
+    public int delete(String id) throws Exception {
+        try (
+            Connection con = DriverManager.getConnection(
+                    jdbcUrl, username, password);
+            PreparedStatement stmt = con.prepareStatement(
+                "delete from pms2_member where mid=?");) {
+            stmt.setString(1, id);
+             return stmt.executeUpdate();
+        }
     }
     
     public Member selectOne(String id) throws Exception {
         
-        try (Connection con = DriverManager.getConnection(
+        Class.forName("com.mysql.jdbc.Driver");
+        try (
+            Connection con = DriverManager.getConnection(
                     jdbcUrl, username, password);
-             PreparedStatement stmt = 
-                     con.prepareStatement("select mid,email from pms2_member where mid=?");) {
-
+            PreparedStatement stmt = con.prepareStatement(
+                "select mid,email from pms2_member where mid=?");) {
+            
             stmt.setString(1, id);
             try (ResultSet rs = stmt.executeQuery();) {
                 if (!rs.next()) {
                     return null;
                 } else {
                     Member member = new Member();
-                    member.setId(rs.getString("mid"));
                     member.setEmail(rs.getString("email"));
-
+                    member.setId(rs.getString("mid"));
                     return member;
                 }
             }
+        }  
+    }
+    
+    public void insert(Member member) throws Exception {
+        try (
+            Connection con = DriverManager.getConnection(
+                    jdbcUrl, username, password);
+            PreparedStatement stmt = con.prepareStatement(
+                "insert into pms2_member(mid,email,pwd) values(?,?,password(?))");) {
+            stmt.setString(1, member.getId());
+            stmt.setString(2, member.getEmail());
+            stmt.setString(3, member.getPassword());
+            stmt.executeUpdate();
         }
     }
     
     public int update(Member member) throws Exception {
-
-        try (Connection con = DriverManager.getConnection(
-                    jdbcUrl, username, password);
-            PreparedStatement stmt = con.prepareStatement(
+        try (
+           Connection con = DriverManager.getConnection(
+            jdbcUrl, username, password);
+                PreparedStatement stmt = con.prepareStatement(
                 "update pms2_member set email=?, pwd=password(?) where mid=?");) {
-            
+
             stmt.setString(1, member.getEmail());
             stmt.setString(2, member.getPassword());
             stmt.setString(3, member.getId());
-            
+
             return stmt.executeUpdate();
         }
     }
     
-    
-    public int delete(String id) throws Exception {
-
-        try (Connection con = DriverManager.getConnection(
-                    jdbcUrl, username, password);
-            PreparedStatement stmt = con.prepareStatement(
-                "delete from pms2_member where mid=?");) {
-            
-            stmt.setString(1, id);
-            
-        return stmt.executeUpdate();
-        }
-    }
-    
-    
-} // class
+}

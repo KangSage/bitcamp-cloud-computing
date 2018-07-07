@@ -2,6 +2,10 @@ package bitcamp.pms.servlet.member;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.util.ArrayList;
 
 import javax.servlet.ServletException;
@@ -41,19 +45,27 @@ public class MemberListServlet extends HttpServlet {
         out.println("</tr>");
 
         try {
-            MemberDao memberDao = 
-                    (MemberDao) getServletContext().getAttribute("memberDao");
-            
-            ArrayList<Member> list = memberDao.selectOne();
-            
-            for(Member member : list) {
-                    out.println("<tr>");
-                    out.printf("    <td><a href='view?id=%s'>%s</a></td><td>%s</td>\n", 
-                            member.getId(),
-                            member.getId(),
-                            member.getEmail());
-                    out.println("</tr>");
-            }
+            Class.forName("com.mysql.jdbc.Driver");
+            try (
+                Connection con = DriverManager.getConnection(
+                        "jdbc:mysql://13.209.19.155:3306/studydb",
+                        "study", "1111");
+                PreparedStatement stmt = con.prepareStatement(
+                        "select mid, email from pms2_member");
+                ResultSet rs = stmt.executeQuery();) {
+
+                ArrayList<Member> list = MemberDao.selectList();
+                
+                    for (Member member : list) {
+                        out.println("<tr>");
+                        out.printf("    <td><a href='view?id=%s'>%s</a></td><td>%s</td>\n", 
+                                member.getId(),
+                                member.getId(),
+                                member.getEmail());
+                        out.println("</tr>");
+                    }
+                }
+
         } catch (Exception e) {
             out.println("<p>목록 가져오기 실패!</p>");
             e.printStackTrace(out);
@@ -62,8 +74,9 @@ public class MemberListServlet extends HttpServlet {
         out.println("</table>");
         out.println("</body>");
         out.println("</html>");
-
+        
     }
 
     
-} // class
+
+}

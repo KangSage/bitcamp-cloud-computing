@@ -37,20 +37,20 @@ public class MemberUpdateServlet extends HttpServlet {
         out.println("<body>");
         out.println("<h1>회원 변경 결과</h1>");
         
-        try {
-                Member member = new Member();
+        try {Member member = new Member();
                 member.setEmail(request.getParameter("email"));
-                member.setPassword(request.getParameter("password"));
                 member.setId(request.getParameter("id"));
+                member.setPassword(request.getParameter("password"));
                 
-                MemberDao memberDao = 
-                        (MemberDao) getServletContext().getAttribute("memberDao");
+                MemberDao memberDao = new MemberDao("jdbc:mysql://13.209.19.155:3306/studydb", "study", "1111");
                 
                 if (memberDao.update(member) == 0) {
                     out.println("<p>해당 회원이 존재하지 않습니다.</p>");
                 } else {
                     out.println("<p>변경하였습니다.</p>");
                 }
+            
+            
         } catch (Exception e) {
             out.println("<p>변경 실패!</p>");
             e.printStackTrace(out);
@@ -58,6 +58,5 @@ public class MemberUpdateServlet extends HttpServlet {
         out.println("</body>");
         out.println("</html>");
     }
-
     
-} // class
+}

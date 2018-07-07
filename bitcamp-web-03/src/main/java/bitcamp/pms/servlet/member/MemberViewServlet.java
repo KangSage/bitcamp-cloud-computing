@@ -2,10 +2,6 @@ package bitcamp.pms.servlet.member;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -40,45 +36,31 @@ public class MemberViewServlet extends HttpServlet {
         out.println("<h1>멤버 보기</h1>");
         
         try {
-            Class.forName("com.mysql.jdbc.Driver");
-            try (
-                Connection con = DriverManager.getConnection(
-                    "jdbc:mysql://13.209.19.155:3306/studydb",
-                    "study", "1111");
-                PreparedStatement stmt = con.prepareStatement(
-                    "select mid,email from pms2_member where mid=?");) {
-                
-                stmt.setString(1, id);
-                try (ResultSet rs = stmt.executeQuery();) {                   
-                    
-                    MemberDao memberDao = 
-                            (MemberDao) getServletContext().getAttribute("memberDao");
-                    Member member = memberDao.selectOne(id);
-                    
-                    if (member == null) {
-                        out.println("<p>유효하지 않은 멤버 아이디입니다.</p>");
-                    } else {
-                        out.println("<form action='update' method='post'>");
-                        out.println("<table border='1'>");
-                        out.println("<tr><th>아이디</th><td>");
-                        out.printf("    <input type='text' name='id' value='%s' readonly></td></tr>\n", 
-                                member.getId());
-                        out.println("<tr><th>이메일</th>");
-                        out.printf("    <td><input type='email' name='email' value='%s'></td></tr>\n",
-                                member.getEmail());
-                        out.println("<tr><th>암호</th>");
-                        out.println("    <td><input type='password' name='password'></td></tr>\n");
-                        out.println("</table>");
-                        out.println("<p>");
-                        out.println("<a href='list'>목록</a>");
-                        out.println("<button>변경</button>");
-                        out.printf("<a href='delete?id=%s'>삭제</a>\n", id);
-                        out.println("</p>");
-                        out.println("</form>");
-                    }
-                }
-            }  
-               
+            Member member = MemberDao.selectOne(id);
+
+            if (member == null) {
+                out.println("<p>유효하지 않은 멤버 아이디입니다.</p>");
+            } else {
+                                
+                out.println("<form action='update' method='post'>");
+                out.println("<table border='1'>");
+                out.println("<tr><th>아이디</th><td>");
+                out.printf("    <input type='text' name='id' value='%s' readonly></td></tr>\n", 
+                        member.getId());
+                out.println("<tr><th>이메일</th>");
+                out.printf("    <td><input type='email' name='email' value='%s'></td></tr>\n", 
+                        member.getEmail());
+                out.println("<tr><th>암호</th>");
+                out.println("    <td><input type='password' name='password'></td></tr>\n");
+                out.println("</table>");
+                out.println("<p>");
+                out.println("<a href='list'>목록</a>");
+                out.println("<button>변경</button>");
+                out.printf("<a href='delete?id=%s'>삭제</a>\n", id);
+                out.println("</p>");
+                out.println("</form>");
+            }
+
         } catch (Exception e) {
             out.printf("<p>%s</p>\n", e.getMessage());
             e.printStackTrace(out);
@@ -86,6 +68,7 @@ public class MemberViewServlet extends HttpServlet {
         out.println("</body>");
         out.println("</html>");
     }
-
     
-} // class
+    
+    
+}

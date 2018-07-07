@@ -54,7 +54,9 @@ public class MemberListServlet extends HttpServlet {
                         "select mid, email from pms2_member");
                 ResultSet rs = stmt.executeQuery();) {
 
-                ArrayList<Member> list = MemberDao.selectList();
+                MemberDao memberDao = new MemberDao("jdbc:mysql://13.209.19.155:3306/studydb", "study", "1111");
+                
+                ArrayList<Member> list = memberDao.selectList();
                 
                     for (Member member : list) {
                         out.println("<tr>");

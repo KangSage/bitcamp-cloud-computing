@@ -33,8 +33,10 @@ public class MemberDeleteServlet extends HttpServlet {
         out.println("<body>");
         out.println("<h1>게시물 삭제 결과</h1>");
         
+        MemberDao memberDao = new MemberDao("jdbc:mysql://13.209.19.155:3306/studydb", "study", "1111");
+        
         try {
-            if (MemberDao.delete(request.getParameter("id")) == 0) {
+            if (memberDao.delete(request.getParameter("id")) == 0) {
                 out.println("<p>해당 회원이 존재하지 않습니다.</p>");
             } else {
                 out.println("<p>삭제하였습니다.</p>");

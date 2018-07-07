@@ -44,7 +44,9 @@ public class MemberAddServlet extends HttpServlet {
             member.setEmail(request.getParameter("email"));
             member.setPassword(request.getParameter("password"));
             
-            MemberDao.insert(member);
+            MemberDao memberDao = new MemberDao("jdbc:mysql://13.209.19.155:3306/studydb", "study", "1111");
+            
+            memberDao.insert(member);
             
             out.println("<p>등록 성공!</p>");
         } catch (Exception e) {

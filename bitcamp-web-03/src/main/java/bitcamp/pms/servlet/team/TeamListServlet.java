@@ -2,16 +2,16 @@ package bitcamp.pms.servlet.team;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import bitcamp.pms.dao.TeamDao;
+import bitcamp.pms.domain.Team;
 
 @SuppressWarnings("serial")
 @WebServlet("/team/list")
@@ -39,29 +39,20 @@ public class TeamListServlet extends HttpServlet {
         out.println("</tr>");
         
         try {
-            Class.forName("com.mysql.jdbc.Driver");
-            try (
-                Connection con = DriverManager.getConnection(
-                        "jdbc:mysql://13.209.19.155:3306/studydb",
-                        "study", "1111");
-                PreparedStatement stmt = con.prepareStatement(
-                    "select name, sdt, edt, max_qty from pms2_team");
-                ResultSet rs = stmt.executeQuery();) {
-                
-                while (rs.next()) {
-                    
+            TeamDao teamDao = 
+                    (TeamDao) getServletContext().getAttribute("teamDao");
+                List<Team> list = teamDao.selectList();
+                for (Team team : list) {
                     out.println("<tr>");
                     out.printf("    <td><a href='view?name=%s'>%s</a></td><td>%d</td><td>%s~%s</td>\n",
-                            rs.getString("name"),
-                            rs.getString("name"),
-                            rs.getInt("max_qty"),
-                            rs.getDate("sdt"),
-                            rs.getDate("edt"));
+                            team.getName(),
+                            team.getName(),
+                            team.getMaxQuantity(),
+                            team.getStartDate(),
+                            team.getEndDate());
                     out.println("</tr>");
-
                 }
             out.println("</table>");
-            }
         } catch (Exception e) {
             out.println("<p>목록 가져오기 실패!</p>");
             e.printStackTrace(out);
@@ -69,5 +60,6 @@ public class TeamListServlet extends HttpServlet {
         out.println("</body>");
         out.println("</html>");
     }
+
     
-}
+} // class

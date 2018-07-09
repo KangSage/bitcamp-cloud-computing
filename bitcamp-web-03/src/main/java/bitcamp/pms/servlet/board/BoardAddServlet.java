@@ -46,10 +46,9 @@ public class BoardAddServlet extends HttpServlet {
         out.println("<body>");
         out.println("<h1>게시물 등록 결과</h1>");
         try {
-            
             BoardDao boardDao = 
                     (BoardDao) getServletContext().getAttribute("boardDao");
-            
+
             Board board = new Board();
             board.setTitle(request.getParameter("title"));
             board.setContent(request.getParameter("content"));

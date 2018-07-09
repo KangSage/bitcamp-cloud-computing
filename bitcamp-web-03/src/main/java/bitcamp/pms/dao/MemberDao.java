@@ -64,7 +64,7 @@ public class MemberDao {
     
     public Member selectOne(String id) throws Exception {
         
-        Class.forName("com.mysql.jdbc.Driver");
+        
         try (
             Connection con = DriverManager.getConnection(
                     jdbcUrl, username, password);

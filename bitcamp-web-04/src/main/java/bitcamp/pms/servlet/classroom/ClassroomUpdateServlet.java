@@ -2,10 +2,7 @@ package bitcamp.pms.servlet.classroom;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.Connection;
 import java.sql.Date;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -40,29 +37,20 @@ public class ClassroomUpdateServlet extends HttpServlet {
         out.println("<h1>강의 변경 결과</h1>");
         
         try {
-            Class.forName("com.mysql.jdbc.Driver");
-            try (
-                Connection con = DriverManager.getConnection(
-                        "jdbc:mysql://13.209.19.155:3306/studydb",
-                        "study", "1111");
-                PreparedStatement stmt = con.prepareStatement(
-                    "update pms2_classroom set titl=?, sdt=?, edt=?, room=? where crno=?");) {
-                
-                ClassroomDao classroomDao = 
-                        (ClassroomDao) getServletContext().getAttribute("classroomDao");
-                Classroom classroom = new Classroom();
-                
-                classroom.setTitle(request.getParameter("title"));
-                classroom.setStartDate(Date.valueOf(request.getParameter("startDate")));
-                classroom.setEndDate(Date.valueOf(request.getParameter("endDate")));
-                classroom.setRoom(request.getParameter("room"));
-                classroom.setNo(Integer.parseInt(request.getParameter("no")));
-                
-                if (classroomDao.update(classroom) == 0) {
-                    out.println("<p>해당 강의가 존재하지 않습니다.</p>");
-                } else {
-                    out.println("<p>변경하였습니다.</p>");
-                }
+            ClassroomDao classroomDao = 
+                    (ClassroomDao) getServletContext().getAttribute("classroomDao");
+            Classroom classroom = new Classroom();
+            
+            classroom.setTitle(request.getParameter("title"));
+            classroom.setStartDate(Date.valueOf(request.getParameter("startDate")));
+            classroom.setEndDate(Date.valueOf(request.getParameter("endDate")));
+            classroom.setRoom(request.getParameter("room"));
+            classroom.setNo(Integer.parseInt(request.getParameter("no")));
+            
+            if (classroomDao.update(classroom) == 0) {
+                out.println("<p>해당 강의가 존재하지 않습니다.</p>");
+            } else {
+                out.println("<p>변경하였습니다.</p>");
             }
         } catch (Exception e) {
             out.println("<p>변경 실패!</p>");

@@ -69,4 +69,5 @@ public class TeamListServlet extends HttpServlet {
         out.println("</body>");
         out.println("</html>");
     }
+    
 }

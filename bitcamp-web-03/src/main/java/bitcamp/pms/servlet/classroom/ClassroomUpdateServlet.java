@@ -13,6 +13,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import bitcamp.pms.dao.ClassroomDao;
+import bitcamp.pms.domain.Classroom;
+
 @SuppressWarnings("serial")
 @WebServlet("/classroom/update")
 public class ClassroomUpdateServlet extends HttpServlet {
@@ -45,13 +48,17 @@ public class ClassroomUpdateServlet extends HttpServlet {
                 PreparedStatement stmt = con.prepareStatement(
                     "update pms2_classroom set titl=?, sdt=?, edt=?, room=? where crno=?");) {
                 
-                stmt.setString(1, request.getParameter("title"));
-                stmt.setDate(2, Date.valueOf(request.getParameter("startDate")));
-                stmt.setDate(3, Date.valueOf(request.getParameter("endDate")));
-                stmt.setString(4, request.getParameter("room"));
-                stmt.setInt(5, Integer.parseInt(request.getParameter("no")));
+                ClassroomDao classroomDao = 
+                        (ClassroomDao) getServletContext().getAttribute("classroomDao");
+                Classroom classroom = new Classroom();
                 
-                if (stmt.executeUpdate() == 0) {
+                classroom.setTitle(request.getParameter("title"));
+                classroom.setStartDate(Date.valueOf(request.getParameter("startDate")));
+                classroom.setEndDate(Date.valueOf(request.getParameter("endDate")));
+                classroom.setRoom(request.getParameter("room"));
+                classroom.setNo(Integer.parseInt(request.getParameter("no")));
+                
+                if (classroomDao.update(classroom) == 0) {
                     out.println("<p>해당 강의가 존재하지 않습니다.</p>");
                 } else {
                     out.println("<p>변경하였습니다.</p>");
@@ -64,4 +71,7 @@ public class ClassroomUpdateServlet extends HttpServlet {
         out.println("</body>");
         out.println("</html>");
     }
-}
+    
+
+    
+} // class

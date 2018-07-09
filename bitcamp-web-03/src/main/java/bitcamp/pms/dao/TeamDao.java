@@ -27,14 +27,11 @@ public class TeamDao {
         this.username = username;
         this.password = password;
     }
-
     
     public List<Team> selectList() throws Exception {
-        Class.forName("com.mysql.jdbc.Driver");
         try (
             Connection con = DriverManager.getConnection(
-                    "jdbc:mysql://13.209.19.155:3306/studydb",
-                    "study", "1111");
+                    jdbcUrl, username, password);
             PreparedStatement stmt = con.prepareStatement(
                 "select name, sdt, edt, max_qty from pms2_team");
             ResultSet rs = stmt.executeQuery();) {
@@ -53,11 +50,9 @@ public class TeamDao {
     
     
     public Team selectOne(String name) throws Exception {
-        Class.forName("com.mysql.jdbc.Driver");
         try (
             Connection con = DriverManager.getConnection(
-                    "jdbc:mysql://13.209.19.155:3306/studydb",
-                    "study", "1111");
+                    jdbcUrl, username, password);
             PreparedStatement stmt = con.prepareStatement(
                 "select dscrt, sdt, edt, max_qty from pms2_team where name=?");) {
             
@@ -92,11 +87,9 @@ public class TeamDao {
     }
     
     public int update(Team team) throws Exception {
-        Class.forName("com.mysql.jdbc.Driver");
         try (
             Connection con = DriverManager.getConnection(
-                    "jdbc:mysql://13.209.19.155:3306/studydb",
-                    "study", "1111");
+                    jdbcUrl, username, password);
             PreparedStatement stmt = con.prepareStatement(
                 "update pms2_team set dscrt=?, max_qty=?, sdt=?, edt=? where name=?");) {
             
@@ -111,11 +104,9 @@ public class TeamDao {
     }
     
     public int delete(String name) throws Exception {
-        Class.forName("com.mysql.jdbc.Driver");
         try (
             Connection con = DriverManager.getConnection(
-                    "jdbc:mysql://13.209.19.155:3306/studydb",
-                    "study", "1111");
+                    jdbcUrl, username, password);
             PreparedStatement stmt = con.prepareStatement(
                 "delete from pms2_team where name=?");) {
             stmt.setString(1, name);

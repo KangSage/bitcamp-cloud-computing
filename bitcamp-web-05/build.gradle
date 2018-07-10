@@ -15,7 +15,7 @@ plugins {
 }
 
 // 인텔리제이 기준 버전 표기
-version '1.0-SNAPSHOT'
+// version '1.0-SNAPSHOT'
 
 // 인텔리제이 소스 컴파일 자바 버전 표기
 sourceCompatibility = 10

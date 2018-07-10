@@ -21,6 +21,7 @@ public class MemberAddServlet extends HttpServlet {
             HttpServletRequest request, 
             HttpServletResponse response)
                     throws ServletException, IOException {
+        response.setContentType("text/html;charset=UTF-8");
         try {
             Member member = new Member();
             member.setId(request.getParameter("id"));
@@ -43,4 +44,4 @@ public class MemberAddServlet extends HttpServlet {
 
 
     
-}
+} // class

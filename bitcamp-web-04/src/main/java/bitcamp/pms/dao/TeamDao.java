@@ -54,13 +54,14 @@ public class TeamDao {
             Connection con = DriverManager.getConnection(
                     jdbcUrl, username, password);
             PreparedStatement stmt = con.prepareStatement(
-                "select dscrt, sdt, edt, max_qty from pms2_team where name=?");) {
+                "select name, dscrt, sdt, edt, max_qty from pms2_team where name=?");) {
             
             stmt.setString(1, name);
             
             try (ResultSet rs = stmt.executeQuery();) {
                 Team team = new Team();
                 if (rs.next()) {
+                    team.setName(rs.getString("name"));
                     team.setDescription(rs.getString("dscrt"));
                     team.setMaxQuantity(rs.getInt("max_qty"));
                     team.setStartDate(rs.getDate("sdt"));

@@ -20,7 +20,7 @@ public class ContextLoaderListener implements ServletContextListener {
         String username = "study";
         String password = "1111";
         
-        System.out.println("ContextLoaderListner 실행! ");
+        System.out.println("ContextLoaderListener 실행! ");
         
         ServletContext sc = sce.getServletContext();
         

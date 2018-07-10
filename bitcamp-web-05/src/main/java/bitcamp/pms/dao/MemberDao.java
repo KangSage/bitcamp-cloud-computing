@@ -1,20 +1,19 @@
 package bitcamp.pms.dao;
 
-import java.util.List;
-
+import bitcamp.pms.domain.Member;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 
-import bitcamp.pms.domain.Member;
+import java.util.List;
 
 public class MemberDao {
-    
+
     SqlSessionFactory sqlSessionFactory;
-    
+
     public MemberDao(SqlSessionFactory sqlSessionFactory) {
         this.sqlSessionFactory = sqlSessionFactory;
     }
-
+    
     public List<Member> selectList() throws Exception {
         try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
             return sqlSession.selectList("member.selectList");
@@ -23,13 +22,13 @@ public class MemberDao {
     
     public Member selectOne(String id) throws Exception {
         try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
-            return (Member) sqlSession.selectOne("member.selectOne", id);
+            return sqlSession.selectOne("member.selectOne", id);
         }
     }
     
     public int insert(Member member) throws Exception {
         try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
-            int count = sqlSession.insert("member.insert", member);
+           int count = sqlSession.insert("member.insert", member);
             sqlSession.commit();
             return count;
         }
@@ -37,7 +36,7 @@ public class MemberDao {
     
     public int update(Member member) throws Exception {
         try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
-            int count =sqlSession.update("member.update", member);
+            int count = sqlSession.update("member.update", member);
             sqlSession.commit();
             return count;
         }
@@ -45,11 +44,9 @@ public class MemberDao {
     
     public int delete(String id) throws Exception {
         try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
-            int count = sqlSession.update("member.delete", id);
+            int count = sqlSession.delete("member.delete", id);
             sqlSession.commit();
             return count;
         }
     }
-    
-    
 }

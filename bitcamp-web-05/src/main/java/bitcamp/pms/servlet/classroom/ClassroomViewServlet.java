@@ -1,16 +1,15 @@
 package bitcamp.pms.servlet.classroom;
 
-import java.io.IOException;
-import java.io.PrintWriter;
+import bitcamp.pms.dao.ClassroomDao;
+import bitcamp.pms.domain.Classroom;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import bitcamp.pms.dao.ClassroomDao;
-import bitcamp.pms.domain.Classroom;
+import java.io.IOException;
 
 @SuppressWarnings("serial")
 @WebServlet("/classroom/view")
@@ -23,62 +22,19 @@ public class ClassroomViewServlet extends HttpServlet {
         int no = Integer.parseInt(request.getParameter("no"));
         
         response.setContentType("text/html;charset=UTF-8");
-        PrintWriter out = response.getWriter();
-        
-        out.println("<!DOCTYPE html>");
-        out.println("<html>");
-        out.println("<head>");
-        out.println("<meta charset='UTF-8'>");
-        out.println("<title>강의 보기</title>");
-        out.println("</head>");
-        out.println("<body>");
-        out.println("<h1>강의 보기</h1>");
-        
+
         try {
             ClassroomDao classroomDao = 
                     (ClassroomDao) getServletContext().getAttribute("classroomDao");
-            
             Classroom classroom = classroomDao.selectOne(no);
-            if (classroom == null) {
-                out.println("<p>유효하지 않은 강의입니다.</p>");
-            } else {
-                out.println("<form action='update' method='post'>");
-                out.printf("<input type='hidden' name='no' value='%d'>\n", classroom.getNo());
-                out.println("<table border='1'>");
-                out.println("<tr>");
-                out.println("    <th>강의명</th>");
-                out.printf("    <td><input type='text' name='title' value='%s'></td>\n",
-                        classroom.getTitle());
-                out.println("</tr>");
-                out.println("<tr>");
-                out.println("    <th>시작일</th>");
-                out.printf("    <td><input type='date' name='startDate' value='%s'></td>\n",
-                        classroom.getStartDate());
-                out.println("</tr>");
-                out.println("<tr>");
-                out.println("    <th>종료일</th>");
-                out.printf("    <td><input type='date' name='endDate' value='%s'></td>\n",
-                        classroom.getEndDate());
-                out.println("</tr>");
-                out.println("<tr>");
-                out.println("    <th>강의실</th>");
-                out.printf("    <td><input type='text' name='room' value='%s'></td>\n",
-                        classroom.getRoom());
-                out.println("</tr>");
-                out.println("</table>");
-                out.println("<p>");
-                out.println("<a href='list'>목록</a>");
-                out.println("<button>변경</button>");
-                out.printf("<a href='delete?no=%d'>삭제</a>\n", no);
-                out.println("</p>");
-                out.println("</form>");
-            }
+            request.setAttribute("classroom", classroom);
+            RequestDispatcher rd = request.getRequestDispatcher("/classroom/view.jsp");
+            rd.include(request, response);
         } catch (Exception e) {
-            out.printf("<p>%s</p>\n", e.getMessage());
-            e.printStackTrace(out);
+            request.setAttribute("error", e);
+            RequestDispatcher rd = request.getRequestDispatcher("/error.jsp");
+            rd.forward(request, response);
         }
-        out.println("</body>");
-        out.println("</html>");
     }
 
     

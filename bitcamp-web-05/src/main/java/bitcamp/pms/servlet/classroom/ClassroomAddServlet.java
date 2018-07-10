@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Date;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -21,22 +22,7 @@ public class ClassroomAddServlet extends HttpServlet {
             HttpServletRequest request, 
             HttpServletResponse response) 
                     throws ServletException, IOException {
-        
-        request.setCharacterEncoding("UTF-8");
-        
         response.setContentType("text/html;charset=UTF-8");
-        PrintWriter out = response.getWriter();
-        
-        out.println("<!DOCTYPE html>");
-        out.println("<html>");
-        out.println("<head>");
-        out.println("<meta charset='UTF-8'>");
-        out.println("<meta http-equiv='Refresh' content='1;url=list'>");
-        out.println("<title>강의 등록</title>");
-        out.println("</head>");
-        out.println("<body>");
-        out.println("<h1>강의 등록 결과</h1>");
-        
         try {
             ClassroomDao classroomDao = 
                     (ClassroomDao) getServletContext().getAttribute("classroomDao");
@@ -46,13 +32,12 @@ public class ClassroomAddServlet extends HttpServlet {
             classroom.setEndDate(Date.valueOf(request.getParameter("endDate")));
             classroom.setRoom(request.getParameter("room"));
             classroomDao.insert(classroom);
-            out.println("<p>등록 성공!</p>");
+            response.sendRedirect("list");
         } catch (Exception e) {
-            out.println("<p>등록 실패!</p>");
-            e.printStackTrace(out);
+            request.setAttribute("error", e);
+            RequestDispatcher rd = request.getRequestDispatcher("error.jsp");
+            rd.forward(request, response);
         }
-        out.println("</body>");
-        out.println("</html>");
     }
     
 

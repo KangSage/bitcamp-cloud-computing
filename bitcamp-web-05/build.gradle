@@ -15,10 +15,10 @@ plugins {
 }
 
 // 인텔리제이 기준 버전 표기
-// version '1.0-SNAPSHOT'
+version '1.0-SNAPSHOT'
 
 // 인텔리제이 소스 컴파일 자바 버전 표기
-// sourceCompatibility = 10
+sourceCompatibility = 10
 
 compileJava {
     // 컴파일 할 때 소스 파일의 인코딩 옵션을 추가할 것이다.
@@ -51,12 +51,12 @@ dependencies {
 
 
     // This dependency is found on compile classpath of this component and consumers.
-    //compile 'com.google.guava:guava:23.0'
+    compile 'com.google.guava:guava:23.0'
 
     // Use JUnit test framework
-    //testCompile 'junit:junit:4.12'
+    testCompile 'junit:junit:4.12'
     
-    // 인텔리제이용 테스트 컴파일러
+    // mavenCentral()용 테스트 컴파일러
     // testCompile group: 'junit', name: 'junit', version: '4.11'
     // testCompile group: 'junit', name: 'junit', version: '4.12'
     
@@ -65,4 +65,5 @@ dependencies {
 // 의존 라이브러리를 다운로드 받을 때 접속할 서버 정보 등록
 repositories {
     jcenter()
+    // mavenCentral()
 }

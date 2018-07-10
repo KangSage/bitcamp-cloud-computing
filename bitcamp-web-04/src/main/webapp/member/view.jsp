@@ -19,12 +19,12 @@
     <p>해당 회원이 존재하지 않습니다.</p>
 </c:when>
 <c:otherwise>
-	<tr><th>아이디</th><td>
-	    <input type='text' name='id' value='${member.id}' readonly></td></tr>
-	<tr><th>이메일</th>
-	    <td><input type='email' name='email' value='${member.email}'></td></tr>
-	<tr><th>암호</th>
-	    <td><input type='password' name='password'></td></tr>
+    <tr><th>아이디</th><td>
+        <input type='text' name='id' value='${member.id}' readonly></td></tr>
+    <tr><th>이메일</th>
+        <td><input type='email' name='email' value='${member.email}'></td></tr>
+    <tr><th>암호</th>
+        <td><input type='password' name='password'></td></tr>
 </c:otherwise>
 </c:choose>
 </table>

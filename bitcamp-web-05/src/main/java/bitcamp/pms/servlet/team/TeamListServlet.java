@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 
 @SuppressWarnings("serial")
@@ -22,10 +23,20 @@ public class TeamListServlet extends HttpServlet {
         
         response.setContentType("text/html;charset=UTF-8");
 
+        HashMap<String, Object> params = new HashMap<>();
+
+        if (request.getParameter("page") != null &&
+                request.getParameter("size") != null) {
+            int page = Integer.parseInt(request.getParameter("page"));
+            int size = Integer.parseInt(request.getParameter("size"));
+            params.put("startIndex", (page - 1) * size);
+            params.put("pageSize", size);
+        }
+
         try {
             TeamDao teamDao = 
                     (TeamDao) getServletContext().getAttribute("teamDao");
-            List<Team> list = teamDao.selectList();
+            List<Team> list = teamDao.selectList(params);
             request.setAttribute("list", list);
             RequestDispatcher rd = request.getRequestDispatcher("/team/list.jsp");
             rd.include(request, response);

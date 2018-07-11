@@ -3,6 +3,7 @@ package bitcamp.pms.listener;
 import bitcamp.pms.dao.BoardDao;
 import bitcamp.pms.dao.ClassroomDao;
 import bitcamp.pms.dao.MemberDao;
+import bitcamp.pms.dao.TeamDao;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
@@ -38,16 +39,13 @@ public class ContextLoaderListener implements ServletContextListener {
             ClassroomDao classroomDao = new ClassroomDao(sqlSessionFactory);
             sc.setAttribute("classroomDao", classroomDao);
 
+            TeamDao teamDao = new TeamDao(sqlSessionFactory);
+            sc.setAttribute("teamDao", teamDao);
+
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        /*
-
-        TeamDao teamDao = new TeamDao(jdbcUrl, username, password);
-        sc.setAttribute("teamDao", teamDao);
-
-        */
 
     }
     

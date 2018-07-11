@@ -1,119 +1,55 @@
 package bitcamp.pms.dao;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.util.ArrayList;
-import java.util.List;
-
 import bitcamp.pms.domain.Board;
+import org.apache.ibatis.session.SqlSession;
+import org.apache.ibatis.session.SqlSessionFactory;
+
+import java.util.List;
+import java.util.Map;
 
 public class BoardDao {
 
-    static {
-        try {
-            Class.forName("com.mysql.jdbc.Driver");
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-    }
-    
-    String jdbcUrl;
-    String username;
-    String password;
-    
-    public BoardDao(String jdbcUrl, String username, String password) {
-        this.jdbcUrl = jdbcUrl;
-        this.username = username;
-        this.password = password;
-    }
-    
-    
-    public List<Board> selectList() throws Exception {
-        
-        List<Board> list = new ArrayList<>();
-        try (
-            Connection con = DriverManager.getConnection(
-                    jdbcUrl, username, password);
-            PreparedStatement stmt = con.prepareStatement(
-                "select bno,titl,cdt from pms2_board");
-            ResultSet rs = stmt.executeQuery();) {
-            
-            while (rs.next()) {
-                Board board = new Board();
-                board.setNo(rs.getInt("bno"));
-                board.setTitle(rs.getString("titl"));
-                board.setCreateDate(rs.getDate("cdt"));
-                list.add(board);
-            }
-            
-            return list;
-        }
-    }
-    
-    public Board selectOne(int no) throws Exception {
-        
-        try (
-            Connection con = DriverManager.getConnection(
-                    jdbcUrl, username, password);
-            PreparedStatement stmt = con.prepareStatement(
-                "select bno,titl,cont,cdt from pms2_board where bno=?");) {
-                 stmt.setInt(1, no);
-            try (ResultSet rs = stmt.executeQuery();) {
-                Board board = new Board();
-                if (rs.next()) {
-                    board.setNo(rs.getInt("bno"));
-                    board.setTitle(rs.getString("titl"));
-                    board.setContent(rs.getString("cont"));
-                    board.setCreateDate(rs.getDate("cdt"));
-                }
-                return board;
-            }
-        }
-        
-    }
-    
-    public void insert(Board board) throws Exception {
-        
-        try (
-            Connection con = DriverManager.getConnection(
-                    jdbcUrl, username, password);
-            PreparedStatement stmt = con.prepareStatement(
-                "insert into pms2_board(titl,cont,cdt) values(?,?,now())");) {
-            stmt.setString(1, board.getTitle());
-            stmt.setString(2, board.getContent());
-            stmt.executeUpdate();
-        }
-    }
-    
-    
-    public int update(Board board) throws Exception {
-        
-        try (
-            Connection con = DriverManager.getConnection(
-                    jdbcUrl, username, password);
-            PreparedStatement stmt = con.prepareStatement(
-                "update pms2_board set titl=?, cont=?, cdt=now() where bno=?");) {
+    SqlSessionFactory sqlSessionFactory;
 
-            stmt.setString(1, board.getTitle());
-            stmt.setString(2, board.getContent());
-            stmt.setInt(3, board.getNo());
-            return stmt.executeUpdate();
+    public BoardDao(SqlSessionFactory sqlSessionFactory) {
+        this.sqlSessionFactory = sqlSessionFactory;
+    }
+
+    public List<Board> selectList(Map<String,Object> params) throws Exception {
+        try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
+         return sqlSession.selectList("board.selectList", params);
+        }
+    }
+
+    public Board selectOne(int no) throws Exception {
+        try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
+                return sqlSession.selectOne("board.selectOne", no);
+        }
+    }
+
+    public int insert(Board board) throws Exception {
+        try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
+            int count = sqlSession.insert("board.insert", board);
+            sqlSession.commit();
+            return count;
+        }
+    }
+
+
+    public int update(Board board) throws Exception {
+        try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
+            int count = sqlSession.update("board.update", board);
+            sqlSession.commit();
+            return count;
         }
     }
     
     public int delete(int no) throws Exception  {
-        
-        try (
-            Connection con = DriverManager.getConnection(
-                    jdbcUrl, username, password);
-            PreparedStatement stmt = con.prepareStatement(
-                "delete from pms2_board where bno=?");) {
-            
-            stmt.setInt(1, no);
-            return stmt.executeUpdate();
-        } 
+        try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
+            int count = sqlSession.delete("board.delete", no);
+            sqlSession.commit();
+            return count;
+        }
     }
     
     

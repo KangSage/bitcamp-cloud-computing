@@ -1,6 +1,7 @@
 package bitcamp.pms.servlet.board;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.RequestDispatcher;
@@ -20,15 +21,25 @@ public class BoardListServlet extends HttpServlet {
     protected void doGet(
             HttpServletRequest request, 
             HttpServletResponse response) throws ServletException, IOException {
-        
-        // 출력할 때 String 객체의 값(UTF-16)을 어떤 문자표를 사용하여 인코딩해서 보낼 것인지 설정한다.
-        // => 반드시 출력 스트림을 얻기 전에 설정해야 한다.
+
+
+        HashMap<String, Object> params = new HashMap<>();
+
+        if (request.getParameter("page") != null &&
+                request.getParameter("size") != null) {
+            int page = Integer.parseInt(request.getParameter("page"));
+            int size = Integer.parseInt(request.getParameter("size"));
+            params.put("startIndex", (page - 1) * size);
+            params.put("pageSize", size);
+        }
+
         response.setContentType("text/html;charset=UTF-8");
+
         try {
             BoardDao boardDao = 
                     (BoardDao) getServletContext().getAttribute("boardDao");
             
-            List<Board> list = boardDao.selectList();
+            List<Board> list = boardDao.selectList(params);
             request.setAttribute("list", list);
             
             RequestDispatcher rd = 

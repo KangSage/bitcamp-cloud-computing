@@ -14,6 +14,8 @@ import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.HashMap;
+import java.util.Map;
 
 @WebListener
 public class ContextLoaderListener implements ServletContextListener {
@@ -33,17 +35,19 @@ public class ContextLoaderListener implements ServletContextListener {
             MemberDao memberDao = new MemberDao(sqlSessionFactory);
             sc.setAttribute("memberDao", memberDao);
 
+            BoardDao boardDao = new BoardDao(sqlSessionFactory);
+            sc.setAttribute("boardDao", boardDao);
+
         } catch (IOException e) {
             e.printStackTrace();
         }
 
 
-        /*BoardDao boardDao = new BoardDao(jdbcUrl, username, password);
-        sc.setAttribute("boardDao", boardDao);
-        
+        /*
+
         ClassroomDao classroomDao = new ClassroomDao(jdbcUrl, username, password);
         sc.setAttribute("classroomDao", classroomDao);
-        
+
         TeamDao teamDao = new TeamDao(jdbcUrl, username, password);
         sc.setAttribute("teamDao", teamDao);*/
     }

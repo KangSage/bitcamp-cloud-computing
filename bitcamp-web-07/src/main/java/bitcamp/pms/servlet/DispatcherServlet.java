@@ -9,6 +9,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import bitcamp.pms.controller.PageController;
+
 @SuppressWarnings("serial")
 @WebServlet("/app/*")
 public class DispatcherServlet extends HttpServlet {
@@ -18,26 +20,36 @@ public class DispatcherServlet extends HttpServlet {
             HttpServletRequest request, 
             HttpServletResponse response)
             throws ServletException, IOException {
+        
+        // 클라이언트가 요청한 서비스 URL을 알아낸다.
+        // 즉 /app/* 에서 *에 해당하는 값을 추출한다.
+        // 예) /app/member/list => member/list
         String pathInfo = request.getPathInfo();
         
         response.setContentType("text/html;charset=UTF-8");
         
-        // 다른 서블릿(페이지 컨트롤러)으로 위임한다.
-        RequestDispatcher rd = request.getRequestDispatcher(pathInfo);
-        rd.include(request, response);
+        // ServletContext 보관소에 저장된 페이지 컨트롤러를 찾는다.
+        PageController pageController = 
+                (PageController) getServletContext().getAttribute(pathInfo);
         
-        // 페이지 컨트롤러가 실행을 끝낸 후 view 이름으로 저장한 JSP를 실행한다.
-        String view = (String) request.getAttribute("view");
-        if (view != null && view.startsWith("redirect:")) {
-            response.sendRedirect(view.substring(9));
-        } else if (view != null) {
-            rd = request.getRequestDispatcher(view);
-            rd.include(request, response);
-        } else {
-            rd = request.getRequestDispatcher("/error.jsp");
+        // 페이지 컨트롤러를 실행
+        try {
+            if (pageController == null) {
+                throw new Exception("해당 URL에 대한 서비스를 처리할 수 없습니다.");
+            }
+            String view = pageController.service(request, response);
+            if (view.startsWith("redirect:")) {
+                response.sendRedirect(view.substring(9));
+            } else if (view != null) {
+                RequestDispatcher rd = request.getRequestDispatcher(view);
+                rd.include(request, response);
+            }
+        } catch (Exception e) {
+            request.setAttribute("error", e);
+            RequestDispatcher rd = 
+                    request.getRequestDispatcher("/error.jsp");
             rd.include(request, response);
         }
         
     }
-
 }

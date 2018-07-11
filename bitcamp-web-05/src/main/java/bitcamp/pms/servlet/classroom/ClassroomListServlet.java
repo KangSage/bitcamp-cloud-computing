@@ -2,6 +2,7 @@ package bitcamp.pms.servlet.classroom;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.RequestDispatcher;
@@ -24,16 +25,29 @@ public class ClassroomListServlet extends HttpServlet {
             HttpServletResponse response) throws ServletException, IOException {
         
         response.setContentType("text/html;charset=UTF-8");
-        PrintWriter out = response.getWriter();
+
+        HashMap<String, Object> params = new HashMap<>();
+
+        if (request.getParameter("page") != null &&
+                request.getParameter("size") != null) {
+            int page = Integer.parseInt(request.getParameter("page"));
+            int size = Integer.parseInt(request.getParameter("size"));
+            params.put("startIndex", (page - 1) * size);
+            params.put("pageSize", size);
+        }
 
         try {
             ClassroomDao classroomDao = 
                     (ClassroomDao) getServletContext().getAttribute("classroomDao");
-                List<Classroom> list = classroomDao.selectList();
+                List<Classroom> list = classroomDao.selectList(params);
                 request.setAttribute("list", list);
-            RequestDispatcher rd = request.getRequestDispatcher("/classroom/list.jsp");
+            RequestDispatcher rd =
+                    request.getRequestDispatcher("/classroom/list.jsp");
             rd.include(request, response);
         } catch (Exception e) {
+            request.setAttribute("error", e);
+            RequestDispatcher rd = request.getRequestDispatcher("/error.jsp");
+            rd.forward(request, response);
         }
     }
     

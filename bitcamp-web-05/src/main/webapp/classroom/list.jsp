@@ -19,7 +19,7 @@
     </tr>
     <c:forEach items="${list}" var="classroom">
     <tr>
-        <td>1</td>
+        <td>${classroom.no}</td>
         <td><a href='view?no=${classroom.no}'>${classroom.title}</a></td>
         <td>${classroom.startDate}~${classroom.endDate}</td>
         <td>${classroom.room}</td>

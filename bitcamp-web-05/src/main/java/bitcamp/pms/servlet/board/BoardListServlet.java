@@ -22,6 +22,7 @@ public class BoardListServlet extends HttpServlet {
             HttpServletRequest request, 
             HttpServletResponse response) throws ServletException, IOException {
 
+        response.setContentType("text/html;charset=UTF-8");
 
         HashMap<String, Object> params = new HashMap<>();
 
@@ -33,7 +34,6 @@ public class BoardListServlet extends HttpServlet {
             params.put("pageSize", size);
         }
 
-        response.setContentType("text/html;charset=UTF-8");
 
         try {
             BoardDao boardDao = 

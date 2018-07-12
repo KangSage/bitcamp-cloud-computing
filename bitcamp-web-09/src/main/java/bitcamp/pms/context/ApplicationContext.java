@@ -3,6 +3,7 @@ package bitcamp.pms.context;
 import java.io.File;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
+import java.net.URL;
 import java.util.Collection;
 import java.util.HashMap;
 
@@ -28,7 +29,10 @@ public class ApplicationContext {
         File dir = new File(url.toURI());
         */
         
-        File dir = Resources.getResourceAsFile(filePath);
+        // File dir = Resources.getResourceAsFile(filePath);
+        // ※ 계정에 공백이 있어 getResourcAsFile()을 사용할 수 없었다.
+        URL url = Resources.getResourceURL(filePath);
+        File dir = new File(url.toURI());
         
         findClass(dir, packageName);
         injectDependency();

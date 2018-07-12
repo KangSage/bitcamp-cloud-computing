@@ -20,11 +20,11 @@ public class MemberListController {
 
     public MemberListController() {}
 
-    @Autowired
     public MemberListController(MemberDao memberDao) {
         this.memberDao = memberDao;
     }
 
+    @Autowired
     public void setMemberDao(MemberDao memberDao) {
         this.memberDao = memberDao;
     }

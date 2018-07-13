@@ -17,26 +17,42 @@
                                 expression="bitcamp.pms.test.*"/>
     </context:component-scan>
 
+    <!--
+    // 자바 코드
+    Object builder = new sqlSessionFactoryBuilder();
+    iocContainer.put("sqlSessionFactoryBuilder", builder);
+    -->
+<!--
     <bean id="sqlSessionFactoryBuilder"
           class="org.apache.ibatis.session.SqlSessionFactoryBuilder"/>
+-->
 
     <!--
+    // 자바 코드
     Object factory = sqlSessionFactoryBuilder.build();
     iocContainer.put("sqlSessionFactory", factory);
     -->
+<!--
     <bean id="sqlSessionFactory"
           factory-bean="sqlSessionFactoryBuilder"
           factory-method="build">
         <constructor-arg ref="inputStream"/>
     </bean>
+-->
 
     <!--
+    // 자바 코드
     Object obj = Resources.getResourcesAsStream("bitcamp...")
     iocContainer.put("inputStream", obj);
     -->
+<!--
     <bean id="inputStream"
           class="org.apache.ibatis.io.Resources"
           factory-method="getResourceAsStream">
         <constructor-arg value="bitcamp/pms/config/mybatis-config.xml"/>
     </bean>
+-->
+
+    <!-- 공장에서 SqlSessionFactory 만들기 -->
+    <bean id="sqlSessionFactory" class="bitcamp.pms.factory.SqlSessionFactoryBean"/>
 </beans>

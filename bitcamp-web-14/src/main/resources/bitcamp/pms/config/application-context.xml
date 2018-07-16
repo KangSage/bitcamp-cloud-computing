@@ -56,7 +56,7 @@
       location="classpath:bitcamp/pms/config/jdbc.properties"/>
     
     <!-- jsp파일을 /WEB-INF/jsp 폴더에서 찾을 수 있도록 ViewResorver -->
-    <bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+     <bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>
         <property name="prefix" value="/WEB-INF/jsp/"/>
         <property name="suffix" value=".jsp"/>

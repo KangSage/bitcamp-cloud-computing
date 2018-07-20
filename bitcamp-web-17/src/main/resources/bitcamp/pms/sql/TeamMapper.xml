@@ -21,6 +21,10 @@
         </if>
     </select>
 
+    <select id="countAll" resultType="int">
+        select count(*) from pms2_team
+    </select>
+
     <select id="selectOne" resultMap="TeamMap" parameterType="string">
         select name, dscrt, sdt, edt, max_qty
         from pms2_team where name=#{value}

@@ -45,19 +45,22 @@ public class MemberController {
         /*리턴 값이 void면 현재 주소가 그대로 리턴됨*/
         /*return "member/form";*/
     }
-    
+
+    @RequestMapping("view/{id}")
+    public String view(
+            @PathVariable String id, Model model) throws Exception {
+
+        Member member = memberService.get(id);
+        model.addAttribute("member", member);
+        return "member/view";
+    }
+
     @PostMapping(value="add")
     public String add(Member member) throws Exception {
         memberService.add(member);
         return "redirect:list";
     }
-    
-    @RequestMapping("delete")
-    public String delete(String id) throws Exception {
-            memberService.delete(id);
-            return "redirect:list";
-    }
-    
+
     @RequestMapping("update")
     public String update(Member member) throws Exception {
         if (memberService.update(member) == 0) {
@@ -66,14 +69,11 @@ public class MemberController {
             return "redirect:list";
         }
     }
-    
-    @RequestMapping("view/{id}")
-    public String view(
-            @PathVariable String id, Model model) throws Exception {
-        
-        Member member = memberService.get(id);
-        model.addAttribute("member", member);
-        return "member/view";
+
+    @RequestMapping("delete")
+    public String delete(String id) throws Exception {
+            memberService.delete(id);
+            return "redirect:list";
     }
-    
+
 }

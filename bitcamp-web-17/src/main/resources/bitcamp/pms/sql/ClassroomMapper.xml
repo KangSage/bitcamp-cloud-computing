@@ -21,6 +21,10 @@
         </if>
     </select>
 
+    <select id="countAll" resultType="int">
+        select count(*) from pms2_classroom
+    </select>
+
     <select id="selectOne" resultMap="ClassroomMap" parameterType="int">
         select crno,titl,sdt,edt,room 
         from pms2_classroom 

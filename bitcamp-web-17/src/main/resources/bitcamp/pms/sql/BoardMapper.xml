@@ -26,6 +26,10 @@
         from pms2_board where bno=#{value}
     </select>
 
+    <select id="countAll" resultType="int">
+        select count(*) from pms2_board
+    </select>
+
     <insert id="insert" parameterType="Board">
         insert into pms2_board(titl,cont,cdt)
         values(#{title},#{content},now())

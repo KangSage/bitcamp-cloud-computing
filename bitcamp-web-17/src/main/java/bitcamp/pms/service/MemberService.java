@@ -33,8 +33,8 @@ public class MemberService {
     // @Transactional
     public int update(Member member) {
         int count = memberDao.update(member);
-        if (count != 100)
-            throw new RuntimeException("일부러 예외발생");
+        /* if (count != 100)
+            throw new RuntimeException("일부러 예외발생"); */
         return count;
     }
 

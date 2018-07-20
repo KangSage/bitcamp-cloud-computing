@@ -3,6 +3,7 @@ package bitcamp.pms.controller;
 import java.util.HashMap;
 import java.util.List;
 
+import bitcamp.pms.service.BoardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,7 +19,8 @@ import bitcamp.pms.domain.Board;
 @Controller
 @RequestMapping("board")
 public class BoardController {
-    @Autowired BoardDao boardDao;
+
+    @Autowired BoardService boardService;
     
     @RequestMapping("list")
     public String list(
@@ -27,16 +29,13 @@ public class BoardController {
 
         if (page < 1) page =1;
         if (size < 1 || size > 20) size =3;
-        
-        // DB에서 가져올 데이터의 페이지 정보
-        HashMap<String, Object> params = new HashMap<>();
 
-        if (page > 0 && (size > 0 && size <= 20))  {
-            params.put("startIndex", (page - 1) * size);
-            params.put("pageSize", size);
-        }
-            List<Board> list = boardDao.selectList(params);
-            model.addAttribute("list", list);
+        List<Board> list = boardService.list(page, size);
+
+        model.addAttribute("list", list);
+        model.addAttribute("page", page);
+        model.addAttribute("size", size);
+        model.addAttribute("totalPage", boardService.getTotalPage(size));
             return "board/list";
     }
     
@@ -44,7 +43,7 @@ public class BoardController {
     public String view(
             @PathVariable int no, Model model) throws Exception {
         
-        Board board = boardDao.selectOne(no);
+        Board board = boardService.get(no);
         model.addAttribute("board", board);
         return "board/view";
     }
@@ -58,14 +57,13 @@ public class BoardController {
     
     @PostMapping(value="add")
     public String add(Board board) throws Exception {
-        
-        boardDao.insert(board);
+         boardService.add(board);
         return "redirect:list";
     }
     
     @RequestMapping("update")
     public String update(Board board) throws Exception {
-        if (boardDao.update(board) == 0) {
+        if (boardService.update(board) == 0) {
             return "board/updatefail";
         } else {
             return "redirect:list";
@@ -73,9 +71,8 @@ public class BoardController {
     }
     
     @RequestMapping("delete")
-    public String delete(int  no) throws Exception {
-            boardDao.delete(no);
-            
+    public String delete(int no) throws Exception {
+            boardService.delete(no);
             return "redirect:list";
     }
     

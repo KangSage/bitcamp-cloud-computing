@@ -6,16 +6,18 @@ import java.util.Map;
 import bitcamp.pms.domain.Board;
 
 public interface BoardDao {
+
+    List<Board> selectList(Map<String,Object> params);
+
+    Board selectOne(int no);
+
+    int countAll();
+
+    int insert(Board board);
+
+    int update(Board board);
     
-    public List<Board> selectList(Map<String,Object> params);
-    
-    public Board selectOne(int no);
-    
-    public void insert(Board board);
-    
-    public int update(Board board);
-    
-    public int delete(int no);
+    int delete(int no);
     
     
     

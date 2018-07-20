@@ -22,5 +22,22 @@
 </tr>
 </c:forEach>
 </table>
+
+<div>
+<c:if test="${requestScope.page > 1}">
+    <a href="list?page=${page - 1}&size=${size}">[이전]</a>
+</c:if>
+<c:if test="${requestScope.page <= 1}">
+    [이전]
+</c:if>
+<span>${page}</span>
+<c:if test="${requestScope.page < totalPage}">
+    <a href="list?page=${page + 1}&size=${size}">[다음]</a>
+</c:if>
+<c:if test="${requestScope.page >= totalPage}">
+    [다음]
+</c:if>
+</div>
+
 </body>
 </html>

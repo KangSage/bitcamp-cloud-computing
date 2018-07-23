@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>자바스크립트</title>
+</head>
+<body>
+<h1>변수 선언 - 로컬 변수</h1>
+<script>
+    "use strict";
+
+    function f() {
+        var b;
+        b = 200;
+        {
+            var c = 300;
+        }
+        console.log("f() :", b);
+        console.log("f() :", c);
+    }
+
+    f();
+</script>
+</body>
+</html>

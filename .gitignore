@@ -1,5 +1,5 @@
 
-# Created by https://www.gitignore.io/api/gradle,eclipse,intellij+all
+# Created by https://www.gitignore.io/api/eclipse,intellij+all,visualstudiocode
 
 ### Eclipse ###
 
@@ -93,6 +93,14 @@ local.properties
 .idea/**/gradle.xml
 .idea/**/libraries
 
+# Gradle and Maven with auto-import
+# When using Gradle or Maven with auto-import, you should exclude module files,
+# since they will be recreated, and may cause churn.  Uncomment if using
+# auto-import.
+# .idea/modules.xml
+# .idea/*.iml
+# .idea/modules
+
 # CMake
 cmake-build-*/
 
@@ -136,24 +144,15 @@ modules.xml
 .idea/misc.xml
 *.ipr
 
-### Gradle ###
-.gradle
-/build/
-
-# Ignore Gradle GUI config
-gradle-app.setting
-
-# Avoid ignoring Gradle wrapper jar file (.jar files are usually ignored)
-!gradle-wrapper.jar
-
-# Cache of project
-.gradletasknamecache
-
-# # Work around https://youtrack.jetbrains.com/issue/IDEA-116898
-# gradle/wrapper/gradle-wrapper.properties
+### VisualStudioCode ###
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
 
 
-# End of https://www.gitignore.io/api/gradle,eclipse,intellij+all
+# End of https://www.gitignore.io/api/eclipse,intellij+all,visualstudiocode
 
 *.project
 *.classpath

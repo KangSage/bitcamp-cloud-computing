@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>자바스크립트</title>
+</head>
+<body>
+<h1>변수 선언 - 글로벌 변수와 로컬 변수의 충돌</h1>
+<script>
+    "use strict";
+var a = 100;
+
+    function f() {
+        var a;
+        a = 200;
+        console.log("f() :", a);
+
+        console.log("글로벌 변수 a : ", window.a);
+    }
+
+    f();
+    console.log("함수 밖에서 : ", a);
+</script>
+</body>
+</html>

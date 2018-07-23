@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>자바스크립트</title>
+</head>
+<body>
+<h1>strict 모드</h1>
+<script type="text/javascript">
+    // var a;
+    a = 100;
+    console.log(a);
+
+    a = "Hello";
+    console.log(a);
+
+    "use strict"
+
+    b = 200; // 오류? 중간에 선언하는 것은 소용 없다.
+
+    console.log(b);
+</script>
+<script>
+    // 첫 줄에 strict 모드로 동작하라고 선언하라!
+    "use strict";
+
+    c = 200;
+    console.log(c);
+
+</script>
+</body>
+</html>

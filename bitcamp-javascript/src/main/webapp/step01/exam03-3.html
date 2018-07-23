@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>자바스크립트</title>
+</head>
+<body>
+<h1>strict 모드와 script 태그</h1>
+<script type="text/javascript">
+    "use strict";
+    // var a;
+    a = 100;
+    console.log(a);
+
+    a = "Hello";
+    console.log(a);
+
+    "use strict"
+
+    b = 200; // 오류? 중간에 선언하는 것은 소용 없다.
+
+    console.log(b);
+</script>
+<script>
+    // use strict는 선언된 태그에서만 적용된다.
+
+    c = 200;
+    console.log(c);
+
+</script>
+</body>
+</html>

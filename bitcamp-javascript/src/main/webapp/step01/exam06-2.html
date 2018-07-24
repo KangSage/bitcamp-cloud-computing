@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>자바스크립트</title>
+</head>
+<body>
+<h1>변수 - destructuring(분해) - 객체 값 분해</h1>
+<script>
+"use strict";
+
+var obj =new Object();
+obj.name = "홍길동";
+obj.kor = 100;
+obj.eng = 90;
+obj.math = 80;
+
+// 객체 값의 일부분을 분해하여 변수에 저장하기
+// => 객체 값을 분해하여 변수에 저장할 때는 변수 선언에 중괄호
+var {name, eng} = obj;
+console.log(name, eng);
+
+var {kor, eng} = obj;
+console.log(kor, eng);
+
+var {kor:k, eng:e} = obj;
+console.log(k, e);
+
+var {name:n, sum:s = 0, aver:a = 0} = obj;
+console.log(n, s, a);
+</script>
+</body>
+</html>

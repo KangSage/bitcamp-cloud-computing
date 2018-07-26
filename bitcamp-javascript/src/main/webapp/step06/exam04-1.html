@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>자바스크립트</title>
+<style>
+img {
+    height: 80px;
+}
+</style>
+</head>
+<body>
+<h1>DOM API - 속성 변경</h1>
+<div id="d1">
+<img src="../image/KakaoTalk_20180718_134827819.jpg">
+<img src="../image/KakaoTalk_20180718_134827999.jpg">
+<img src="../image/KakaoTalk_20180718_135539081.jpg">
+<img src="../image/KakaoTalk_20180718_182606235.jpg">
+<img src="../image/KakaoTalk_20180718_135538655.jpg">
+</div>
+<script>
+"use strict";
+
+setInterval(() => {
+var e = document.querySelector("#d1 > img:first-child");
+// d1 태그에 막내 자식 태그를 추가한다.
+d1.appendChild(e);
+}, 2000);
+
+</script>
+</body>
+</html>

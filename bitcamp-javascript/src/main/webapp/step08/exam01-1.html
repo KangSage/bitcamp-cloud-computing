@@ -11,8 +11,8 @@
 </style>
 </head>
 <body>
-<h1>AJAX - 동기 요청</h1>
-<button id="btn1">버튼2</button><br>
+<h1>AJAX 동기 요청</h1>
+<button id="btn1">버튼1</button><br>
 <div id="resultDiv"></div>
 
 <script>
@@ -40,6 +40,7 @@
         // 두 번째 파라미터: URL
         // 세 번째 파라미터: 비동기 요청 여부
         xhr.open('GET', 'exam01-1.jsp', false);
+
         // 3) 서버에 요청 정보를 보낸다.
         // => 동기 요청인 경우 서버에서 응답이 올 떄까지 리턴하지 않는다.
         xhr.send();

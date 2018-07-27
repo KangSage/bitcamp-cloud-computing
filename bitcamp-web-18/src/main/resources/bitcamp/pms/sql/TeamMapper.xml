@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="bitcamp.pms.dao.TeamDao">
+    
+    <!-- 컬럼명과 객체의 프로퍼티명을 연결한다. -->
+    <resultMap type="Team" id="TeamMap">
+        <id column="name" property="name"/>
+        <result column="dscrt" property="description"/>
+        <result column="max_qty" property="maxQuantity"/>
+        <result column="sdt" property="startDate"/>
+        <result column="edt" property="endDate"/>
+    </resultMap>
+    
+    <select id="selectList" resultMap="TeamMap" parameterType="map">
+        select name, sdt, edt, max_qty
+        from pms2_team
+        <if test="startIndex != null and pageSize != null">
+        limit #{startIndex}, #{pageSize}
+        </if>
+    </select>
+
+    <select id="countAll" resultType="int">
+        select count(*) from pms2_team
+    </select>
+
+    <select id="selectOne" resultMap="TeamMap" parameterType="string">
+        select name, dscrt, sdt, edt, max_qty
+        from pms2_team where name=#{value}
+    </select>
+
+    <insert id="insert" parameterType="Team">
+        insert into pms2_team(name,dscrt,max_qty,sdt,edt)
+        values(#{name},#{description},#{maxQuantity},#{startDate},#{endDate})
+    </insert>
+
+    <update id="update" parameterType="Team">
+        update pms2_team
+        set dscrt=#{description}, max_qty=#{maxQuantity}, sdt=#{startDate}, edt=#{endDate}
+        where name=#{name}
+    </update>
+
+    <delete id="delete" parameterType="string">
+        delete from pms2_team where name=#{value}
+    </delete>
+
+</mapper>

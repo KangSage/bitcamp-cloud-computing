@@ -1,12 +1,10 @@
 package bitcamp.pms.controller.json;
 
 import java.net.URLDecoder;
-import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -75,11 +73,10 @@ public class MemberController {
         if (memberService.update(member) == 0) {
             result.put("status", "fail");
             result.put("error", "해당 아이디가 없습니다.");
-            return  result;
         } else {
             result.put("status", "success");
-            return result;
         }
+        return result;
     }
     
     @RequestMapping("view/{id}")

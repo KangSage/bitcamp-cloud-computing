@@ -2,18 +2,27 @@
 <html>
 <head>
     <meta charset='UTF-8'>
-    <title>멤버 보기</title>
+    <title>게시물 보기</title>
 </head>
 <body>
-<h1>멤버 보기</h1>
+<h1>게시물 보기</h1>
 <form>
     <table border='1'>
-        <tr><th>아이디</th><td>
-            <input type='text' id='eId' readonly></td></tr>
-        <tr><th>이메일</th>
-            <td><input type='email' id='eEmail'></td></tr>
-        <tr><th>암호</th>
-            <td><input type='password' id='ePassword'></td></tr>
+        <tr class="viewform">
+            <th>번호</th>
+            <td><input type='text' id='eNo' readonly></td>
+        </tr>
+        <tr>
+            <th>제목</th>
+            <td><input type='text' id='eTitle'></td>
+        </tr>
+        <tr>
+            <th>내용</th>
+            <td><textarea id='eContent' rows='10' cols='60'></textarea></td>
+        </tr>
+        <tr class="viewform">
+            <th>등록일</th><td id="eCreatedDate"></td>
+        </tr>
     </table>
     <p>
         <button id="eListBtn" type="button">목록</button>
@@ -22,20 +31,18 @@
         <button id="eAddBtn" type="button" class="newform">등록</button>
     </p>
 </form>
-
 <script src="../js/common.js"></script>
 <script>
     "use strict";
 
     var data = null;
-    var {id, page, size} = parseQuery(location.href);
+    var {no, page, size} = parseQuery(location.href);
 
-    if (id == undefined) { // 입력 폼.
+    if (no == undefined) { // 입력 폼.
         var el = document.querySelectorAll('.viewform');
         for (var e of el) {
             e.style.display = 'none';
         }
-        eId.removeAttribute('readonly');
     } else { // 상세 보기 폼
         var el = document.querySelectorAll('.newform');
         for (var e of el) {
@@ -51,17 +58,19 @@
                 return;
             }
             data = JSON.parse(xhr.responseText);
-            if (data.member == null) {
+            if (data.board == null) {
                 alert('아이디가 무효합니다.');
                 location.href = "list.html";
                 return;
             }
-            eId.value = data.member.id;
-            eEmail.value = data.member.email;
+            eNo.value = data.board.no;
+            eTitle.value = data.board.title;
+            eContent.value = data.board.content;
+            eCreatedDate.innerHTML = data.board.createdDate;
         };
 
         xhr.open('GET',
-            `../../json/member/view/${id}`,
+            `../../json/board/view/${no}`,
             true);
         xhr.send();
     }
@@ -92,10 +101,10 @@
             }
         };
 
-        xhr.open('POST', '../../json/member/update', true);
+        xhr.open('POST', '../../json/board/update', true);
         xhr.setRequestHeader('Content-Type',
             'application/x-www-form-urlencoded');
-        xhr.send(`id=${eId.value}&email=${eEmail.value}&password=${ePassword.value}`);
+        xhr.send(`no=${eNo.value}&title=${eTitle.value}&content=${eContent.value}`);
     };
 
     eDeleteBtn.onclick = function () {
@@ -117,8 +126,8 @@
         };
 
         xhr.open('GET',
-           `../../json/member/delete?id=${eId.value}`,
-           true);
+            `../../json/board/delete?no=${eNo.value}`,
+            true);
         xhr.send();
     };
 
@@ -131,16 +140,15 @@
                 alert("서버에서 오류 발생!");
                 return;
             }
-                location.href = 'list.html';
+            location.href = 'list.html';
         };
 
-        xhr.open('POST', '../../json/member/add', true);
+        xhr.open('POST', '../../json/board/add', true);
         xhr.setRequestHeader('Content-Type',
             'application/x-www-form-urlencoded');
-        xhr.send(`id=${eId.value}&email=${eEmail.value}&password=${ePassword.value}`);
+        xhr.send(`title=${eTitle.value}&content=${eContent.value}`);
     }
 
 </script>
-
 </body>
 </html>

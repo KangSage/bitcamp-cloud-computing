@@ -9,7 +9,6 @@
         <id column="bno" property="no"/>
         <result column="titl" property="title"/>
         <result column="cont" property="content"/>
-        <result column="pwd" property="password"/>
         <result column="cdt" property="createdDate"/>
     </resultMap>
     

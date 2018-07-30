@@ -23,7 +23,7 @@
     <td><input type='text' name='title' value='${board.title}'></td></tr>
 <tr><th>내용</th>
     <td><textarea name='content' rows='10' cols='60'>${board.content}</textarea></td></tr>
-<tr><th>등록일</th><td>${board.createDate}</td></tr>
+<tr><th>등록일</th><td>${board.createdDate}</td></tr>
 </c:otherwise>
 </c:choose>
 </table>

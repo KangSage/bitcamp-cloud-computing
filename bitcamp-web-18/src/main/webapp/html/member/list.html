@@ -2,11 +2,12 @@
 <html>
 <head>
     <meta charset='UTF-8'>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>멤버 목록</title>
 </head>
 <body>
 <h1>멤버 목록5</h1>
-<p><a href='form'>새회원</a></p>
+<p><a href='view.html'>새회원</a></p>
 
 <table id="eListTable" border='1'>
     <thead>
@@ -23,7 +24,7 @@
 
 
 <script src="../js/common.js"></script>
-<script>
+<script language="JavaScript" charset="UTF-8">
     "use strict"
 
     var {page, size} = parseQuery(location.href);
@@ -59,7 +60,7 @@
                 var tr = document.createElement("tr");
                 tr.innerHTML =
                     `<td><a href='#' data-id='${item.id}' onclick='clickViewLink(event)'>${item.id}</a></td>
-		        <td>${item.email}</td>`;
+                <td>${item.email}</td>`;
                 tbody.appendChild(tr);
             }
 
@@ -78,13 +79,15 @@
         xhr.open('GET',
             `../../json/member/list?page=${page}&size=${size}`,
             true);
+
         xhr.send();
     }
 
     function clickViewLink(event) {
         event.preventDefault();
         var id = event.currentTarget.getAttribute('data-id');
-        location.href = `view.html?id=${id}&page=${data.page}&size=${data.size}`;
+        var urlId = encodeURI(encodeURIComponent(id));
+        location.href = `view.html?id=${urlId}&page=${data.page}&size=${data.size}`;
     }
 </script>
 

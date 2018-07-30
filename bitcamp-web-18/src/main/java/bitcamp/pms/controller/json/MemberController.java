@@ -1,5 +1,7 @@
 package bitcamp.pms.controller.json;
 
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.List;
 
@@ -46,35 +48,47 @@ public class MemberController {
     }
     
     @PostMapping("add")
-    public String add(Member member) throws Exception {
-        
+    public Object add(Member member) throws Exception {
         memberService.add(member);
-        return "redirect:list";
+        HashMap<String, Object> result = new HashMap<>();
+        result.put("status", "success");
+        return result;
     }
     
     @RequestMapping("delete")
-    public String delete(String id) throws Exception {
-        
-        memberService.delete(id); 
-        return "redirect:list";
-       
+    public Object delete(String id) throws Exception {
+
+        HashMap<String, Object> result = new HashMap<>();
+        if (memberService.delete(id) == 0) {
+            result.put("status", "fail");
+            result.put("error", "해당 아이디가 없습니다.");
+            return  result;
+        } else {
+            result.put("status", "success");
+            return result;
+        }
     }
     
     @RequestMapping("update")
-    public String update(Member member) throws Exception {
-        
+    public Object update(Member member) throws Exception {
+        HashMap<String, Object> result = new HashMap<>();
         if (memberService.update(member) == 0) {
-            return "member/updatefail";
+            result.put("status", "fail");
+            result.put("error", "해당 아이디가 없습니다.");
+            return  result;
         } else {
-            return "redirect:list";
+            result.put("status", "success");
+            return result;
         }
     }
     
     @RequestMapping("view/{id}")
     public Object view(
             @PathVariable String id) throws Exception {
+        String urlId = URLDecoder.decode(id, "utf-8");
+        System.out.println(urlId);
         HashMap<String, Object> data = new HashMap<>();
-        Member member = memberService.get(id);
+        Member member = memberService.get(urlId);
         data.put("member", member);
         return data;
     }

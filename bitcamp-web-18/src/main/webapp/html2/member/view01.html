@@ -23,80 +23,62 @@
     </p>
 </form>
 
-<script src="../js/common.js"></script>
+<script src="../js/bit.js"></script>
 <script>
     "use strict";
 
     var data = null;
-    var {id, page, size} = parseQuery(location.href);
+    var {id, page, size} = $.parseQuery(location.href);
 
     if (id == undefined) { // 입력 폼.
-        var el = document.querySelectorAll('.viewform');
-        for (var e of el) {
-            e.style.display = 'none';
-        }
-        eId.removeAttribute('readonly');
+        var el = $('.viewform').css('display', 'none');
+        $('eId').removeAttr('readonly');
     } else { // 상세 보기 폼
-        var el = document.querySelectorAll('.newform');
-        for (var e of el) {
-            e.style.display = 'none';
-        }
+        $('.newform').css('display', 'none');
 
-        var xhr = new XMLHttpRequest();
-
-        xhr.onreadystatechange = function() {
-            if (xhr.readyState < 4) return;
-            if (xhr.status !== 200) {
-                alert("서버에서 오류 발생!");
-                return;
+        $.getJSON(`../../json/member/view/${id}`,
+            function (result) {
+                data = result;
+                if (data.member == null) {
+                    alert('아이디가 무효합니다.');
+                    location.href = "list.html";
+                    return;
+                }
+                $(eId).val(data.member.id);
+                $(eEmail).val(data.member.email);
             }
-            data = JSON.parse(xhr.responseText);
-            if (data.member == null) {
-                alert('아이디가 무효합니다.');
-                location.href = "list.html";
-                return;
-            }
-            eId.value = data.member.id;
-            eEmail.value = data.member.email;
-        };
-
-        xhr.open('GET',
-            `../../json/member/view/${id}`,
-            true);
-        xhr.send();
+        );
     }
 
-    eListBtn.onclick = function() {
+    $(eListBtn).click(function() {
         if (page) {
             location.href = `list.html?page=${page}&size=${size}`;
         } else {
             location.href = 'list.html';
         }
-    };
+    });
 
-    eUpdateBtn.onclick = function () {
-        var xhr = new XMLHttpRequest();
-
-        xhr.onreadystatechange = function() {
-            if (xhr.readyState < 4) return;
-            if (xhr.status !== 200) {
-                alert("서버에서 오류 발생!");
-                return;
+    $(eUpdateBtn).click(function () {
+        $.ajax('../../json/member/update', {
+            method : 'POST',
+            dataType : "json",
+            data : {
+               id: $(eId).val(),
+               email: $(eEmail).val(),
+               password: $(ePassword).val()
+            },
+            success: function (result) {
+                let data = result;
+                if (data.status == 'success') {
+                    location.href = `list.html?page=${page}&size=${size}`;
+                } else {
+                    alert('변경 오류 입니다.');
+                    console.log(data.error);
+                }
             }
-            let data = JSON.parse(xhr.responseText);
-            if (data.status == 'success') {
-                location.href = `list.html?page=${page}&size=${size}`;
-            } else {
-                alert('변경 오류 입니다.');
-                console.log(data.error);
-            }
-        };
+        });
+    });
 
-        xhr.open('POST', '../../json/member/update', true);
-        xhr.setRequestHeader('Content-Type',
-            'application/x-www-form-urlencoded;charset=UTF-8');
-        xhr.send(`id=${eId.value}&email=${eEmail.value}&password=${ePassword.value}`);
-    };
 
     eDeleteBtn.onclick = function () {
         var xhr = new XMLHttpRequest();
@@ -136,7 +118,7 @@
 
         xhr.open('POST', '../../json/member/add', true);
         xhr.setRequestHeader('Content-Type',
-            'application/x-www-form-urlencoded;charset=UTF-8');
+            'application/x-www-form-urlencoded');
         xhr.send(`id=${eId.value}&email=${eEmail.value}&password=${ePassword.value}`);
     }
 

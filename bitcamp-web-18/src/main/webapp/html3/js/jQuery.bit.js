@@ -1,6 +1,6 @@
-function parseQuery(qs) {
+$.parseQuery = function (url) {
     var paramMap = {};
-    var qs = location.href.split('?');
+    var qs = url.split('?');
     if (qs.length > 1) {
         var params = qs[1].split("&");
         for (var param of params) {
@@ -9,4 +9,4 @@ function parseQuery(qs) {
         }
     }
     return paramMap;
-}
+};

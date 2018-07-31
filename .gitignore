@@ -166,7 +166,6 @@ modules.xml
 **/.vscode
 *.DS_Store
 **/node_modules
-**/package-lock.json
 **/securiry.properties
 
 !build.gradle

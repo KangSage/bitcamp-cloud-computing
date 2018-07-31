@@ -2,18 +2,34 @@
 <html>
 <head>
     <meta charset='UTF-8'>
-    <title>멤버 보기</title>
+    <title>팀 보기</title>
 </head>
 <body>
-<h1>멤버 보기</h1>
+<h1 class="viewform">팀 보기</h1>
+<h1 class="newfrom">팀 등록</h1>
 <form>
     <table border='1'>
-        <tr><th>아이디</th><td>
-            <input type='text' id='eId' readonly></td></tr>
-        <tr><th>이메일</th>
-            <td><input type='email' id='eEmail'></td></tr>
-        <tr><th>암호</th>
-            <td><input type='password' id='ePassword'></td></tr>
+        <tr>
+            <th>팀명</th>
+            <td><input type="text" id="eName" readonly></td>
+        </tr>
+        <tr>
+            <th>설명</th><td>
+            <textarea id="eDescription"
+                      rows="6" cols="60"></textarea></td>
+        </tr>
+        <tr>
+            <th>최대인원</th>
+            <td><input type="number" id="eMaxQuantity" value="3"></td>
+        </tr>
+        <tr>
+            <th>시작일</th>
+            <td><input type="date" id="eStartDate"></td>
+        </tr>
+        <tr>
+            <th>종료일</th>
+            <td><input type="date" id="eEndDate"></td>
+        </tr>
     </table>
     <p>
         <button id="eListBtn" type="button">목록</button>
@@ -22,20 +38,20 @@
         <button id="eAddBtn" type="button" class="newform">등록</button>
     </p>
 </form>
-
 <script src="../js/common.js"></script>
 <script>
     "use strict";
 
     var data = null;
-    var {id, page, size} = parseQuery(location.href);
+    var {name, page, size} = parseQuery(location.href);
 
-    if (id == undefined) { // 입력 폼.
+    console.log(name);
+    if (name == 'undefined') { // 입력 폼.
         var el = document.querySelectorAll('.viewform');
         for (var e of el) {
             e.style.display = 'none';
         }
-        eId.removeAttribute('readonly');
+        eName.removeAttribute('readonly');
     } else { // 상세 보기 폼
         var el = document.querySelectorAll('.newform');
         for (var e of el) {
@@ -51,17 +67,20 @@
                 return;
             }
             data = JSON.parse(xhr.responseText);
-            if (data.member == null) {
-                alert('아이디가 무효합니다.');
+            if (data.team == null) {
+                alert('팀이 무효합니다.');
                 location.href = "list.html";
                 return;
             }
-            eId.value = data.member.id;
-            eEmail.value = data.member.email;
+            eName.value = data.team.name;
+            eDescription.value = data.team.description;
+            eMaxQuantity.value = data.team.maxQuantity;
+            eStartDate.value = data.team.startDate;
+            eEndDate.value = data.team.endDate;
         };
 
         xhr.open('GET',
-            `../../json/member/view/${id}`,
+            `../../json/team/view/${name}`,
             true);
         xhr.send();
     }
@@ -92,10 +111,10 @@
             }
         };
 
-        xhr.open('POST', '../../json/member/update', true);
+        xhr.open('POST', '../../json/team/update', true);
         xhr.setRequestHeader('Content-Type',
             'application/x-www-form-urlencoded;charset=UTF-8');
-        xhr.send(`id=${eId.value}&email=${eEmail.value}&password=${ePassword.value}`);
+        xhr.send(`name=${eName.value}&description=${eDescription.value}&maxQuantity=${eMaxQuantity.value}&startDate=${eStartDate.value}&endDate=${eEndDate.value}`);
     };
 
     eDeleteBtn.onclick = function () {
@@ -117,8 +136,8 @@
         };
 
         xhr.open('GET',
-           `../../json/member/delete?id=${eId.value}`,
-           true);
+            `../../json/team/delete?name=${eName.value}`,
+            true);
         xhr.send();
     };
 
@@ -131,16 +150,14 @@
                 alert("서버에서 오류 발생!");
                 return;
             }
-                location.href = 'list.html';
+            location.href = 'list.html';
         };
 
-        xhr.open('POST', '../../json/member/add', true);
+        xhr.open('POST', '../../json/team/add', true);
         xhr.setRequestHeader('Content-Type',
             'application/x-www-form-urlencoded;charset=UTF-8');
-        xhr.send(`id=${eId.value}&email=${eEmail.value}&password=${ePassword.value}`);
+        xhr.send(`name=${eName.value}&description=${eDescription.value}&maxQuantity=${eMaxQuantity.value}&startDate=${eStartDate.value}&endDate=${eEndDate.value}`);
     }
-
 </script>
-
 </body>
 </html>

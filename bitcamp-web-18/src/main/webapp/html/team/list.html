@@ -2,15 +2,17 @@
 <html>
 <head>
     <meta charset='UTF-8'>
-    <title>강의 목록</title>
+    <title>팀 목록</title>
 </head>
 <body>
-<h1>강의 목록</h1>
-<p><a href='view.html'>새 강의</a></p>
+<h1>팀 목록입니다.</h1>
+<p><a href='view.html'>새 팀</a></p>
 <table id="eListTable" border='1'>
     <thead>
     <tr>
-        <th>번호</th><th>강의명</th><th>기간</th><th>강의실</th>
+        <th>팀명</th>
+        <th>최대인원</th>
+        <th>기간</th>
     </tr>
     </thead>
     <tbody></tbody>
@@ -56,10 +58,11 @@
             for (var item of data.list) {
                 var tr = document.createElement("tr");
                 tr.innerHTML =
-                    `<td>${item.no}</td>
-                <td><a href='#' data-no='${item.no}' onclick="clickViewLink(event)">${item.title}</a></td>
-                <td>${item.startDate}~${item.endDate}</td>
-                <td>${item.room}</td>`;
+                    `<td>
+                    <a href='#' data-id='${item.name}' onclick="clickViewLink(event)">${item.name}</a>
+                    </td>
+                    <td>${item.maxQuantity}</td>
+                    <td>${item.startDate}~${item.endDate}</td>`;
                 tbody.appendChild(tr);
             }
 
@@ -76,7 +79,7 @@
         };
 
         xhr.open('GET',
-            `../../json/classroom/list?page=${page}&size=${size}`,
+            `../../json/team/list?page=${page}&size=${size}`,
             true);
 
         xhr.send();
@@ -84,8 +87,9 @@
 
     function clickViewLink(event) {
         event.preventDefault();
-        var no = event.currentTarget.getAttribute('data-no');
-        location.href = `view.html?no=${no}&page=${data.page}&size=${data.size}`;
+        var id = event.currentTarget.getAttribute('data-id');
+        var urlId = encodeURI(encodeURIComponent(id));
+        location.href = `view.html?name=${urlId}&page=${data.page}&size=${data.size}`;
     }
 </script>
 </body>

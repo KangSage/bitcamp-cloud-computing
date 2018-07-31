@@ -52,7 +52,7 @@ let bit = function (value) {
             e.removeAttribute(name);
         return el;
     };
-    
+
     el.on = function (name, p2, p3) {
       // 이벤트 리스너를 추가하는 함수
         var selector = null;
@@ -92,9 +92,29 @@ let bit = function (value) {
 
         return el;
     };
-    
+
     el.click = function (handler) {
         return el.on('click', handler);
+    };
+
+    el.css = function (name, value) {
+        if (arguments.length == 1) {
+            return el[0].style[name];
+        }
+        for (var e of el) {
+            e.style[name] = value;
+        }
+        return el;
+    };
+
+    el.val =  function (value) {
+        if (arguments.length == 0) {
+            return el[0].value;
+        }
+        for (var e of el) {
+            e.value = value;
+        }
+        return el;
     };
 
     return el;
@@ -142,19 +162,26 @@ bit.ajax = function (url, settings) {
             done(data);
         }
     };
-    // settings에 서버로 보낼 data가 있다면 url에 포함해야 한다.
+    // settings에 서버로 보낼 data가 있다면 query string으로 만든다.
+    var qs = '';
     if (settings.data) {
-        var qs = '';
         for (var propName in settings.data) {
             qs += `&${propName}=${settings.data[propName]}`;
         }
+    }
+
+    if (settings.method == 'GET') {
         if (url.indexOf('?') == -1)
             url += '?';
         url += qs;
+        xhr.open(settings.method, url, true);
+        xhr.send();
+    } else {
+        xhr.open(settings.method, url, true);
+        xhr.setRequestHeader('Content-Type',
+            'application/x-www-form-urlencoded');
+        xhr.send(qs);
     }
-    console.log(url);
-    xhr.open(settings.method, url, true);
-    xhr.send();
 
     // XMLHttpRequest 객체를 리턴하기 전에 함수를 추가한다.
     let done;
@@ -170,6 +197,7 @@ bit.getJSON = function (url, p2, p3) {
     let success = null;
 
     if (arguments.length > 1) {
+
         if (typeof p2 == 'function') success = p2;
         else data = p2;
 
@@ -178,6 +206,37 @@ bit.getJSON = function (url, p2, p3) {
 
     return bit.ajax(url, {
         dataType: 'json',
+        data: data,
+        success: success
+    });
+};
+
+bit.post = function (url, p2, p3, p4) {
+    let data = {};
+    let success = null;
+    let dataType = 'text';
+
+    if (arguments.length == 2) {
+        if (typeof p3 == "function") {
+            data = p2;
+            success = p3;
+        } else if (typeof p2 == 'function') {
+            success = p2;
+            dataType = p3;
+        } else {
+            data = p2;
+            dataType = p3;
+        }
+
+    } else if (arguments.length > 2) {
+        data = p2;
+        success = p3;
+        dataType = p4;
+    }
+
+    return bit.ajax(url, {
+        method : 'POST',
+        dataType: dataType,
         data: data,
         success: success
     });

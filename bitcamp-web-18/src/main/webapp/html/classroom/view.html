@@ -1,36 +1,159 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset='UTF-8'>
+    <meta http-equiv="Content-Type" charset="UTF-8" />
     <title>강의 보기</title>
 </head>
 <body>
 <h1>강의 보기</h1>
 <form>
-    <input type='hidden' name='no' value='1'>
+    <input type='hidden' id='eNo'>
     <table border='1'>
         <tr>
             <th>강의명</th>
-            <td><input type='text' name='title' value='new deal 01'></td>
+            <td><input type='text' id='eTitle'></td>
         </tr>
         <tr>
             <th>시작일</th>
-            <td><input type='date' name='startDate' value='2018-07-03'></td>
+            <td><input type='date' id='eStartDate'></td>
         </tr>
         <tr>
             <th>종료일</th>
-            <td><input type='date' name='endDate' value='2018-09-07'></td>
+            <td><input type='date' id='eEndDate'></td>
         </tr>
         <tr>
             <th>강의실</th>
-            <td><input type='text' name='room' value='Gangnam 503'></td>
+            <td><input type='text' id='eRoom'></td>
         </tr>
     </table>
-    <div>
-        <button id="ePrevBtn">이전</button>
-        <span id="ePageNo"></span>
-        <button id="eNextBtn">다음</button>
-    </div>
+    <p>
+        <button id="eListBtn" type="button">목록</button>
+        <button id="eUpdateBtn" type="button" class="viewform">변경</button>
+        <button id="eDeleteBtn" type="button" class="viewform">삭제</button>
+        <button id="eAddBtn" type="button" class="newform">등록</button>
+    </p>
 </form>
+<script src="../js/common.js"></script>
+<script>
+    "use strict";
+
+    var data = null;
+    var {no, page, size} = parseQuery(location.href);
+
+    if (no == undefined) { // 입력 폼.
+        var el = document.querySelectorAll('.viewform');
+        for (var e of el) {
+            e.style.display = 'none';
+        }
+    } else { // 상세 보기 폼
+        var el = document.querySelectorAll('.newform');
+        for (var e of el) {
+            e.style.display = 'none';
+        }
+
+        var xhr = new XMLHttpRequest();
+
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState < 4) return;
+            if (xhr.status !== 200) {
+                alert("서버에서 오류 발생!");
+                return;
+            }
+            data = JSON.parse(xhr.responseText);
+            if (data.classroom == null) {
+                alert('아이디가 무효합니다.');
+                location.href = "list.html";
+                return;
+            }
+            eNo.value = data.classroom.no;
+            eTitle.value = data.classroom.title;
+            eStartDate.value = data.classroom.startDate;
+            eEndDate.value = data.classroom.endDate;
+            eRoom.value = data.classroom.room;
+        };
+
+        xhr.open('GET',
+            `../../json/classroom/view/${no}`,
+            true);
+        xhr.send();
+    }
+
+    eListBtn.onclick = function() {
+        if (page) {
+            location.href = `list.html?page=${page}&size=${size}`;
+        } else {
+            location.href = 'list.html';
+        }
+    };
+
+    eUpdateBtn.onclick = function () {
+        var xhr = new XMLHttpRequest();
+
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState < 4) return;
+            if (xhr.status !== 200) {
+                alert("서버에서 오류 발생!");
+                return;
+            }
+            let data = JSON.parse(xhr.responseText);
+            if (data.status == 'success') {
+                location.href = `list.html?page=${page}&size=${size}`;
+            } else {
+                alert('변경 오류 입니다.');
+                console.log(data.error);
+            }
+        };
+
+        xhr.open('POST', '../../json/classroom/update', true);
+        xhr.setRequestHeader('Content-Type',
+            'application/x-www-form-urlencoded;charset=UTF-8');
+        xhr.send(`no=${eNo.value}&title=${eTitle.value}&startDate=${eStartDate.value}&endDate=${eEndDate.value}&room=${eRoom.value}`);
+    };
+
+    eDeleteBtn.onclick = function () {
+        var xhr = new XMLHttpRequest();
+
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState < 4) return;
+            if (xhr.status !== 200) {
+                alert("서버에서 오류 발생!");
+                return;
+            }
+            let data = JSON.parse(xhr.responseText);
+            if (data.status == 'success') {
+                location.href = `list.html?page=${page}&size=${size}`;
+            } else {
+                alert('삭제 오류입니다.');
+                console.log(data.error);
+            }
+        };
+
+        xhr.open('GET',
+            `../../json/classroom/delete?no=${eNo.value}`,
+            true);
+        xhr.send();
+    };
+
+    eAddBtn.onclick = function () {
+        var xhr = new XMLHttpRequest();
+
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState < 4) return;
+            if (xhr.status !== 200) {
+                alert("서버에서 오류 발생!");
+                return;
+            }
+            location.href = 'list.html';
+        };
+
+
+        xhr.open('POST', '../../json/classroom/add', true);
+
+        xhr.setRequestHeader('Content-Type',
+            'application/x-www-form-urlencoded;charset=UTF-8');
+        xhr.send(`title=${eTitle.value}&startDate=${eStartDate.value}&endDate=${eEndDate.value}&room=${eRoom.value}`);
+    }
+
+</script>
 </body>
 </html>

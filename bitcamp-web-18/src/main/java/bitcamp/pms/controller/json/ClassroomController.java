@@ -3,7 +3,6 @@ package bitcamp.pms.controller.json;
 import bitcamp.pms.domain.Classroom;
 import bitcamp.pms.service.ClassroomService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -19,8 +18,6 @@ public class ClassroomController {
             @RequestParam(defaultValue="1") int page, 
             @RequestParam(defaultValue="3") int size) throws Exception {
 
-        System.out.println(page);
-        System.out.println(size);
         if (page < 1) page =1;
         if (size < 1 || size > 20) size =3;
 
@@ -40,31 +37,44 @@ public class ClassroomController {
     }
 
     @RequestMapping("view/{no}")
-    public String view(
-            @PathVariable int no, Model model) throws Exception {
-
-        model.addAttribute("classroom", classroomService.get(no));
-        return "classroom/view";
+    public Object view(
+            @PathVariable int no) throws Exception {
+        HashMap<String, Object> data = new HashMap<>();
+        data.put("classroom", classroomService.get(no));
+        return data;
     }
 
     @PostMapping(value="add")
-    public String add(Classroom classroom) throws Exception {
+    public Object add(Classroom classroom) throws Exception {
+        System.out.println(classroom);
+        HashMap<String, Object> result = new HashMap<>();
         classroomService.add(classroom);
-        return "redirect:list";
+        result.put("status", "success");
+        return result;
     }
 
     @RequestMapping("update")
-    public String update(Classroom classroom) throws Exception {
+    public Object update(Classroom classroom) throws Exception {
+        HashMap<String, Object> result = new HashMap<>();
         if (classroomService.update(classroom) == 0) {
-            return "classroom/updatefail";
+            result.put("status", "fail");
+            result.put("error", "강의가 없습니다.");
         } else {
-            return "redirect:list";
+            result.put("status", "success");
         }
+        return result;
+
     }
 
     @RequestMapping("delete")
-    public String delete(int no) throws Exception {
-        classroomService.delete(no);
-        return "redirect:list";
+    public Object delete(int no) throws Exception {
+        HashMap<String, Object> result = new HashMap<>();
+        if (classroomService.delete(no) == 0) {
+            result.put("status", "fail");
+            result.put("error", "해당 게시물이 없습니다.");
+        } else {
+            result.put("status", "success");
+        }
+        return result;
     }
 }

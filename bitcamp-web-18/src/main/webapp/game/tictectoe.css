@@ -1,0 +1,20 @@
+h1 {
+    position: relative;
+    text-align: center;
+}
+
+table > td {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+td {
+    border: 3px solid black;
+    width: 100px;
+    height: 100px;
+    text-align: center;
+}
+p {
+    font-size: 500%;
+    margin: -30% 0% 0% 5%;
+}

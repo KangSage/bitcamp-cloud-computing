@@ -3,7 +3,7 @@
 const mysql = require('mysql');
 
 var con = mysql.createConnection({
-    host: '13.209.35.254', 
+    host: '13.209.19.155',
     //port: '3306',
     database: 'studydb',
     user: 'study',
@@ -16,6 +16,8 @@ con.connect(function(err) {
     console.log('연결 성공입니다!');
     
     // 연결에 성공했을 때만 SQL을 실행하라고 예약한다.
+    // => 이미 end가 예약 된 이후이기 때문에
+    //    end 후에 SQL 실행을 예약할 수 없어 오류 발생!
     con.query('select * from pms2_member', function(err, results) {
         if (err) throw err;
         

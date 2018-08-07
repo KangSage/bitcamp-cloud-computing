@@ -1,4 +1,4 @@
-// 주제: 데이터베이스 프로그래밍 - select 실행
+// 주제: 데이터베이스 프로그래밍 - insert 실행
 
 const mysql = require('mysql');
 
@@ -16,19 +16,22 @@ con.connect(function(err) {
     console.log('연결 성공입니다!');
 });
 
+var email = 'user003@test.com';
+var mid = 'user003';
+var pwd = '1111';
 
-// query(sql, 실행  후 호출될 함수);
-// =>SQL 실행 예약! 지금 당장 실행하는 것이 아니다.
-con.query('select * from pms2_member', function(err, results) {
-    if (err) throw err;
-    
-    console.log('결과를 가져왔다!');
+con.query(
+    `insert into pms2_member(email,mid,pwd)
+     values('${email}', '${mid}', password('${pwd}'))`, 
+    function(err, result) {
+        if (err) throw err;
+        
+    console.log('입력 성공!');
 });
 
 
 con.end(function(err) {
     if (err) throw err; 
-    
     console.log('연결을 끊었습니다!')
 }); 
 

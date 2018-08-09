@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='UTF-8'>
+    <title>팀 목록</title>
+</head>
+<body>
+<h1>팀 목록입니다.</h1>
+<p><a href='view.html'>새 팀</a></p>
+<table id="eListTable" border='1'>
+    <thead>
+    <tr>
+        <th>팀명</th>
+        <th>최대인원</th>
+        <th>기간</th>
+    </tr>
+    </thead>
+    <tbody>
+    {{#each list}}
+    <tr>
+    <td>
+        <a href='#' data-id='{{name}}'>{{name}}</a>
+    </td>
+    <td>{{max_qty}}</td>
+    <td>{{sdt}}~{{edt}}</td>
+    </tr>
+    {{/each}}
+    </tbody>
+</table>
+<div>
+    <button id="ePrevBtn">이전</button>
+    <span id="ePageNo"></span>
+    <button id="eNextBtn">다음</button>
+</div>
+</body>
+</html>
+
+

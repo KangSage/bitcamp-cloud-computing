@@ -16,14 +16,14 @@ import org.springframework.web.bind.annotation.RestController;
 import bitcamp.pms.domain.Member;
 import bitcamp.pms.service.MemberService;
 
-//@CrossOrigin
+@CrossOrigin
 @RestController
 @RequestMapping("/member")
 public class MemberController {
 
     @Autowired MemberService memberService;
     
-    //@CrossOrigin
+    @CrossOrigin
     @RequestMapping("list")
     public Object list(
             @RequestParam(defaultValue="1") int page, 
@@ -50,6 +50,7 @@ public class MemberController {
     
     @PostMapping("add")
     public Object add(Member member) throws Exception {
+        System.out.println(member);
         memberService.add(member);
         HashMap<String, Object> result = new HashMap<>();
         result.put("status", "success");

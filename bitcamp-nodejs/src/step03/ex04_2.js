@@ -4,7 +4,6 @@
 // [출력 결과]
 // 등록 성공입니다.
 
-
 const http = require('http')
 const url = require('url')
 const mysql = require('mysql');

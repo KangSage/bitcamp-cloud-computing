@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='UTF-8'>
+    <title>팀 보기</title>
+</head>
+<body>
+<h1 class="viewform">팀 보기</h1>
+<h1 class="newfrom">팀 등록</h1>
+<form>
+    <table border='1'>
+        <tr>
+            <th>팀명</th>
+            <td><input type="text" id="eName" readonly value="{{name}}"></td>
+        </tr>
+        <tr>
+            <th>설명</th><td>
+            <textarea id="eDescription"
+                      rows="6" cols="60">{{dscrt}}</textarea></td>
+        </tr>
+        <tr>
+            <th>최대인원</th>
+            <td><input type="number" id="eMaxQuantity" value="{{max_qty}}"></td>
+        </tr>
+        <tr>
+            <th>시작일</th>
+            <td><input type="date" id="eStartDate" value="{{sdt}}"></td>
+        </tr>
+        <tr>
+            <th>종료일</th>
+            <td><input type="date" id="eEndDate" value="{{edt}}"></td>
+        </tr>
+    </table>
+    <p>
+        <button id="eListBtn" type="button">목록</button>
+        <button id="eUpdateBtn" type="button" class="viewform">변경</button>
+        <button id="eDeleteBtn" type="button" class="viewform">삭제</button>
+        <button id="eAddBtn" type="button" class="newform">등록</button>
+    </p>
+</form>
+
+</body>
+</html>

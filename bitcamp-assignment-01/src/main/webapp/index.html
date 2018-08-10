@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>회원가입</title>
+    <link rel="stylesheet" href="./node_modules/bootstrap/dist/css/bootstrap.min.css">
+</head>
+<body>
+<div style="height: 300px;"></div>
+<div class="container center-block" style="width: 800px;">
+    <div class="center-block" style="height: 100px;">
+        <h1 class="center-block" style="width: 200px;">회원 가입</h1>
+    </div>
+    <form>
+        <div class="form-group row">
+            <label for="eEmail" class="col-sm-2 col-form-label center-block">이메일</label>
+            <div class="col-sm-5">
+                <input type="email" class="form-control center-block" id="eEmail" name="email" placeholder="example@test.com">
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="name" class="col-sm-2 col-form-label">이름</label>
+            <div class="col-sm-5">
+                <input type="text" class="form-control" id="eName" name="name" placeholder="홍길동">
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label for="ePassword" class="col-sm-2 col-form-label">암호</label>
+            <div class="col-sm-5" style="">
+                <input type="password" class="form-control" id="ePassword" name="password" placeholder="...">
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-sm-10" style="text-align: center">
+                <button id="eJoinBtn" type="button" class="newform btn btn-primary btn-sm">회원가입</button>
+            </div>
+        </div>
+    </form>
+</div> <!-- .container -->
+<script src="./node_modules/jquery/dist/jquery.min.js"></script>
+<script src="./node_modules/popper.js/dist/umd/popper.min.js"></script>
+<script src="./node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+<script>
+    $('#eJoinBtn').click(function() {
+        $.post('./json/member/add',
+            {
+                name: $('#eName').val(),
+                email: $('#eEmail').val(),
+                password: $('#ePassword').val()
+            },
+            function(data) {
+                if (data.status === 'success') {
+                    location.href = 'login.html';
+                } else {
+                    alert('이미 존재하는 계정 입니다.');
+                    console.log(data.status);
+                }
+            },
+            'json');
+    });
+</script>
+</body>
+</html>

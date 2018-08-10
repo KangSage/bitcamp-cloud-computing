@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>로그인</title>
+    <link rel="stylesheet" href="./node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <style>
+
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>로그인</h1>
+    <form>
+        <div class="form-group row">
+            <label for="eEmail" class="col-sm-2 col-form-label">이메일</label>
+            <div class="col-sm-4">
+                <input type="email" class="form-control" id="eEmail" name="email" placeholder="example@test.com">
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="ePassword" class="col-sm-2 col-form-label">암호</label>
+            <div class="col-sm-4">
+                <input type="password" class="form-control" id="ePassword" name="password" placeholder="...">
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-sm-10">
+                <button id="loginBtn" type="button" class="btn btn-primary btn-sm">로그인</button>
+            </div>
+        </div>
+    </form>
+</div> <!-- .container -->
+<script src="./node_modules/jquery/dist/jquery.min.js"></script>
+<script src="./node_modules/popper.js/dist/umd/popper.min.js"></script>
+<script src="./node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+<script>
+    $('#loginBtn').click(function() {
+// 로그인 입력값 검사
+        if ($('#eEmail').val() == ''){
+            alert('이메일 주소를 입력해주세요');
+            return;
+        } else if ($('#ePassword').val() == ''){
+            alert('비밀번호를 입력해주세요');
+            return;
+        }
+
+        $.post('./json/member/login',
+            {
+                email: $('#eEmail').val(),
+                password: $('#ePassword').val()
+            },
+            function(result) {
+                if (result.status === 'success') {
+                    location.href = 'view.html';
+                    // t
+                } else {
+                    alert('이메일이나 암호가 일치하는 사용자를 찾을 수 없습니다.!');
+                    location.reload();
+                }
+            },
+            'json');
+    });
+</script>
+</body>
+</html>
